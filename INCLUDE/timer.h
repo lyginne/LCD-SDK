@@ -1,0 +1,1 @@
+void SetDelayTimer(int value);

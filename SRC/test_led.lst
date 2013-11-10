@@ -1,0 +1,1021 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 2.9.0 #5416 (Mar 22 2009) (UNIX)
+                              4 ; This file was generated Sun Nov 10 18:56:34 2013
+                              5 ;--------------------------------------------------------
+                              6 	.module test_led
+                              7 	.optsdcc -mmcs51 --model-small
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _main
+                             13 	.globl _KeyPressedInterrupt
+                             14 	.globl _DelayExpired
+                             15 	.globl _verifyAndSave
+                             16 	.globl _checkExpression
+                             17 	.globl _SPR0
+                             18 	.globl _SPR1
+                             19 	.globl _CPHA
+                             20 	.globl _CPOL
+                             21 	.globl _SPIM
+                             22 	.globl _SPE
+                             23 	.globl _WCOL
+                             24 	.globl _ISPI
+                             25 	.globl _I2CI
+                             26 	.globl _I2CTX
+                             27 	.globl _I2CRS
+                             28 	.globl _I2CM
+                             29 	.globl _MDI
+                             30 	.globl _MCO
+                             31 	.globl _MDE
+                             32 	.globl _MDO
+                             33 	.globl _CS0
+                             34 	.globl _CS1
+                             35 	.globl _CS2
+                             36 	.globl _CS3
+                             37 	.globl _SCONV
+                             38 	.globl _CCONV
+                             39 	.globl _DMA
+                             40 	.globl _ADCI
+                             41 	.globl _P
+                             42 	.globl _F1
+                             43 	.globl _OV
+                             44 	.globl _RS0
+                             45 	.globl _RS1
+                             46 	.globl _F0
+                             47 	.globl _AC
+                             48 	.globl _CY
+                             49 	.globl _CAP2
+                             50 	.globl _CNT2
+                             51 	.globl _TR2
+                             52 	.globl _XEN
+                             53 	.globl _TCLK
+                             54 	.globl _RCLK
+                             55 	.globl _EXF2
+                             56 	.globl _TF2
+                             57 	.globl _WDE
+                             58 	.globl _WDS
+                             59 	.globl _WDR2
+                             60 	.globl _WDR1
+                             61 	.globl _PRE0
+                             62 	.globl _PRE1
+                             63 	.globl _PRE2
+                             64 	.globl _PX0
+                             65 	.globl _PT0
+                             66 	.globl _PX1
+                             67 	.globl _PT1
+                             68 	.globl _PS
+                             69 	.globl _PT2
+                             70 	.globl _PADC
+                             71 	.globl _PSI
+                             72 	.globl _RXD
+                             73 	.globl _TXD
+                             74 	.globl _INT0
+                             75 	.globl _INT1
+                             76 	.globl _T0
+                             77 	.globl _T1
+                             78 	.globl _WR
+                             79 	.globl _RD
+                             80 	.globl _EX0
+                             81 	.globl _ET0
+                             82 	.globl _EX1
+                             83 	.globl _ET1
+                             84 	.globl _ES
+                             85 	.globl _ET2
+                             86 	.globl _EADC
+                             87 	.globl _EA
+                             88 	.globl _RI
+                             89 	.globl _TI
+                             90 	.globl _RB8
+                             91 	.globl _TB8
+                             92 	.globl _REN
+                             93 	.globl _SM2
+                             94 	.globl _SM1
+                             95 	.globl _SM0
+                             96 	.globl _T2
+                             97 	.globl _T2EX
+                             98 	.globl _IT0
+                             99 	.globl _IE0
+                            100 	.globl _IT1
+                            101 	.globl _IE1
+                            102 	.globl _TR0
+                            103 	.globl _TF0
+                            104 	.globl _TR1
+                            105 	.globl _TF1
+                            106 	.globl _DACCON
+                            107 	.globl _DAC1H
+                            108 	.globl _DAC1L
+                            109 	.globl _DAC0H
+                            110 	.globl _DAC0L
+                            111 	.globl _SPICON
+                            112 	.globl _SPIDAT
+                            113 	.globl _ADCCON3
+                            114 	.globl _ADCGAINH
+                            115 	.globl _ADCGAINL
+                            116 	.globl _ADCOFSH
+                            117 	.globl _ADCOFSL
+                            118 	.globl _B
+                            119 	.globl _ADCCON1
+                            120 	.globl _I2CCON
+                            121 	.globl _ACC
+                            122 	.globl _PSMCON
+                            123 	.globl _ADCDATAH
+                            124 	.globl _ADCDATAL
+                            125 	.globl _ADCCON2
+                            126 	.globl _DMAP
+                            127 	.globl _DMAH
+                            128 	.globl _DMAL
+                            129 	.globl _PSW
+                            130 	.globl _TH2
+                            131 	.globl _TL2
+                            132 	.globl _RCAP2H
+                            133 	.globl _RCAP2L
+                            134 	.globl _T2CON
+                            135 	.globl _EADRL
+                            136 	.globl _WDCON
+                            137 	.globl _EDATA4
+                            138 	.globl _EDATA3
+                            139 	.globl _EDATA2
+                            140 	.globl _EDATA1
+                            141 	.globl _ETIM3
+                            142 	.globl _ETIM2
+                            143 	.globl _ETIM1
+                            144 	.globl _ECON
+                            145 	.globl _IP
+                            146 	.globl _P3
+                            147 	.globl _IE2
+                            148 	.globl _IE
+                            149 	.globl _P2
+                            150 	.globl _I2CADD
+                            151 	.globl _I2CDAT
+                            152 	.globl _SBUF
+                            153 	.globl _SCON
+                            154 	.globl _P1
+                            155 	.globl _TH1
+                            156 	.globl _TH0
+                            157 	.globl _TL1
+                            158 	.globl _TL0
+                            159 	.globl _TMOD
+                            160 	.globl _TCON
+                            161 	.globl _PCON
+                            162 	.globl _DPP
+                            163 	.globl _DPH
+                            164 	.globl _DPL
+                            165 	.globl _SP
+                            166 	.globl _P0
+                            167 	.globl _interruptWriteBuffer
+                            168 	.globl _writeBuffer
+                            169 	.globl _readBuffer
+                            170 ;--------------------------------------------------------
+                            171 ; special function registers
+                            172 ;--------------------------------------------------------
+                            173 	.area RSEG    (DATA)
+                    0080    174 _P0	=	0x0080
+                    0081    175 _SP	=	0x0081
+                    0082    176 _DPL	=	0x0082
+                    0083    177 _DPH	=	0x0083
+                    0084    178 _DPP	=	0x0084
+                    0087    179 _PCON	=	0x0087
+                    0088    180 _TCON	=	0x0088
+                    0089    181 _TMOD	=	0x0089
+                    008A    182 _TL0	=	0x008a
+                    008B    183 _TL1	=	0x008b
+                    008C    184 _TH0	=	0x008c
+                    008D    185 _TH1	=	0x008d
+                    0090    186 _P1	=	0x0090
+                    0098    187 _SCON	=	0x0098
+                    0099    188 _SBUF	=	0x0099
+                    009A    189 _I2CDAT	=	0x009a
+                    009B    190 _I2CADD	=	0x009b
+                    00A0    191 _P2	=	0x00a0
+                    00A8    192 _IE	=	0x00a8
+                    00A9    193 _IE2	=	0x00a9
+                    00B0    194 _P3	=	0x00b0
+                    00B8    195 _IP	=	0x00b8
+                    00B9    196 _ECON	=	0x00b9
+                    00BA    197 _ETIM1	=	0x00ba
+                    00BB    198 _ETIM2	=	0x00bb
+                    00C4    199 _ETIM3	=	0x00c4
+                    00BC    200 _EDATA1	=	0x00bc
+                    00BD    201 _EDATA2	=	0x00bd
+                    00BE    202 _EDATA3	=	0x00be
+                    00BF    203 _EDATA4	=	0x00bf
+                    00C0    204 _WDCON	=	0x00c0
+                    00C6    205 _EADRL	=	0x00c6
+                    00C8    206 _T2CON	=	0x00c8
+                    00CA    207 _RCAP2L	=	0x00ca
+                    00CB    208 _RCAP2H	=	0x00cb
+                    00CC    209 _TL2	=	0x00cc
+                    00CD    210 _TH2	=	0x00cd
+                    00D0    211 _PSW	=	0x00d0
+                    00D2    212 _DMAL	=	0x00d2
+                    00D3    213 _DMAH	=	0x00d3
+                    00D4    214 _DMAP	=	0x00d4
+                    00D8    215 _ADCCON2	=	0x00d8
+                    00D9    216 _ADCDATAL	=	0x00d9
+                    00DA    217 _ADCDATAH	=	0x00da
+                    00DF    218 _PSMCON	=	0x00df
+                    00E0    219 _ACC	=	0x00e0
+                    00E8    220 _I2CCON	=	0x00e8
+                    00EF    221 _ADCCON1	=	0x00ef
+                    00F0    222 _B	=	0x00f0
+                    00F1    223 _ADCOFSL	=	0x00f1
+                    00F2    224 _ADCOFSH	=	0x00f2
+                    00F3    225 _ADCGAINL	=	0x00f3
+                    00F4    226 _ADCGAINH	=	0x00f4
+                    00F5    227 _ADCCON3	=	0x00f5
+                    00F7    228 _SPIDAT	=	0x00f7
+                    00F8    229 _SPICON	=	0x00f8
+                    00F9    230 _DAC0L	=	0x00f9
+                    00FA    231 _DAC0H	=	0x00fa
+                    00FB    232 _DAC1L	=	0x00fb
+                    00FC    233 _DAC1H	=	0x00fc
+                    00FD    234 _DACCON	=	0x00fd
+                            235 ;--------------------------------------------------------
+                            236 ; special function bits
+                            237 ;--------------------------------------------------------
+                            238 	.area RSEG    (DATA)
+                    008F    239 _TF1	=	0x008f
+                    008E    240 _TR1	=	0x008e
+                    008D    241 _TF0	=	0x008d
+                    008C    242 _TR0	=	0x008c
+                    008B    243 _IE1	=	0x008b
+                    008A    244 _IT1	=	0x008a
+                    0089    245 _IE0	=	0x0089
+                    0088    246 _IT0	=	0x0088
+                    0091    247 _T2EX	=	0x0091
+                    0090    248 _T2	=	0x0090
+                    009F    249 _SM0	=	0x009f
+                    009E    250 _SM1	=	0x009e
+                    009D    251 _SM2	=	0x009d
+                    009C    252 _REN	=	0x009c
+                    009B    253 _TB8	=	0x009b
+                    009A    254 _RB8	=	0x009a
+                    0099    255 _TI	=	0x0099
+                    0098    256 _RI	=	0x0098
+                    00AF    257 _EA	=	0x00af
+                    00AE    258 _EADC	=	0x00ae
+                    00AD    259 _ET2	=	0x00ad
+                    00AC    260 _ES	=	0x00ac
+                    00AB    261 _ET1	=	0x00ab
+                    00AA    262 _EX1	=	0x00aa
+                    00A9    263 _ET0	=	0x00a9
+                    00A8    264 _EX0	=	0x00a8
+                    00B7    265 _RD	=	0x00b7
+                    00B6    266 _WR	=	0x00b6
+                    00B5    267 _T1	=	0x00b5
+                    00B4    268 _T0	=	0x00b4
+                    00B3    269 _INT1	=	0x00b3
+                    00B2    270 _INT0	=	0x00b2
+                    00B1    271 _TXD	=	0x00b1
+                    00B0    272 _RXD	=	0x00b0
+                    00BF    273 _PSI	=	0x00bf
+                    00BE    274 _PADC	=	0x00be
+                    00BD    275 _PT2	=	0x00bd
+                    00BC    276 _PS	=	0x00bc
+                    00BB    277 _PT1	=	0x00bb
+                    00BA    278 _PX1	=	0x00ba
+                    00B9    279 _PT0	=	0x00b9
+                    00B8    280 _PX0	=	0x00b8
+                    00C7    281 _PRE2	=	0x00c7
+                    00C6    282 _PRE1	=	0x00c6
+                    00C5    283 _PRE0	=	0x00c5
+                    00C3    284 _WDR1	=	0x00c3
+                    00C2    285 _WDR2	=	0x00c2
+                    00C1    286 _WDS	=	0x00c1
+                    00C0    287 _WDE	=	0x00c0
+                    00CF    288 _TF2	=	0x00cf
+                    00CE    289 _EXF2	=	0x00ce
+                    00CD    290 _RCLK	=	0x00cd
+                    00CC    291 _TCLK	=	0x00cc
+                    00CB    292 _XEN	=	0x00cb
+                    00CA    293 _TR2	=	0x00ca
+                    00C9    294 _CNT2	=	0x00c9
+                    00C8    295 _CAP2	=	0x00c8
+                    00D7    296 _CY	=	0x00d7
+                    00D6    297 _AC	=	0x00d6
+                    00D5    298 _F0	=	0x00d5
+                    00D4    299 _RS1	=	0x00d4
+                    00D3    300 _RS0	=	0x00d3
+                    00D2    301 _OV	=	0x00d2
+                    00D1    302 _F1	=	0x00d1
+                    00D0    303 _P	=	0x00d0
+                    00DF    304 _ADCI	=	0x00df
+                    00DE    305 _DMA	=	0x00de
+                    00DD    306 _CCONV	=	0x00dd
+                    00DC    307 _SCONV	=	0x00dc
+                    00DB    308 _CS3	=	0x00db
+                    00DA    309 _CS2	=	0x00da
+                    00D9    310 _CS1	=	0x00d9
+                    00D8    311 _CS0	=	0x00d8
+                    00EF    312 _MDO	=	0x00ef
+                    00EE    313 _MDE	=	0x00ee
+                    00ED    314 _MCO	=	0x00ed
+                    00EC    315 _MDI	=	0x00ec
+                    00EB    316 _I2CM	=	0x00eb
+                    00EA    317 _I2CRS	=	0x00ea
+                    00E9    318 _I2CTX	=	0x00e9
+                    00E8    319 _I2CI	=	0x00e8
+                    00FF    320 _ISPI	=	0x00ff
+                    00FE    321 _WCOL	=	0x00fe
+                    00FD    322 _SPE	=	0x00fd
+                    00FC    323 _SPIM	=	0x00fc
+                    00FB    324 _CPOL	=	0x00fb
+                    00FA    325 _CPHA	=	0x00fa
+                    00F9    326 _SPR1	=	0x00f9
+                    00F8    327 _SPR0	=	0x00f8
+                            328 ;--------------------------------------------------------
+                            329 ; overlayable register banks
+                            330 ;--------------------------------------------------------
+                            331 	.area REG_BANK_0	(REL,OVR,DATA)
+   0000                     332 	.ds 8
+                            333 ;--------------------------------------------------------
+                            334 ; overlayable bit register bank
+                            335 ;--------------------------------------------------------
+                            336 	.area BIT_BANK	(REL,OVR,DATA)
+   0000                     337 bits:
+   0000                     338 	.ds 1
+                    8000    339 	b0 = bits[0]
+                    8100    340 	b1 = bits[1]
+                    8200    341 	b2 = bits[2]
+                    8300    342 	b3 = bits[3]
+                    8400    343 	b4 = bits[4]
+                    8500    344 	b5 = bits[5]
+                    8600    345 	b6 = bits[6]
+                    8700    346 	b7 = bits[7]
+                            347 ;--------------------------------------------------------
+                            348 ; internal ram data
+                            349 ;--------------------------------------------------------
+                            350 	.area DSEG    (DATA)
+   0000                     351 _readBuffer::
+   0000                     352 	.ds 36
+   0024                     353 _writeBuffer::
+   0024                     354 	.ds 36
+   0048                     355 _interruptWriteBuffer::
+   0048                     356 	.ds 36
+   006C                     357 _tempForExpression:
+   006C                     358 	.ds 3
+   006F                     359 _expressionByteNumber:
+   006F                     360 	.ds 1
+   0070                     361 _transmitting:
+   0070                     362 	.ds 1
+   0071                     363 _expressionReceiving:
+   0071                     364 	.ds 1
+   0072                     365 _savedKeyChar:
+   0072                     366 	.ds 1
+   0073                     367 _delays:
+   0073                     368 	.ds 1
+   0074                     369 _number:
+   0074                     370 	.ds 1
+                            371 ;--------------------------------------------------------
+                            372 ; overlayable items in internal ram 
+                            373 ;--------------------------------------------------------
+                            374 	.area OSEG    (OVR,DATA)
+                            375 ;--------------------------------------------------------
+                            376 ; Stack segment in internal ram 
+                            377 ;--------------------------------------------------------
+                            378 	.area	SSEG	(DATA)
+   0000                     379 __start__stack:
+   0000                     380 	.ds	1
+                            381 
+                            382 ;--------------------------------------------------------
+                            383 ; indirectly addressable internal ram data
+                            384 ;--------------------------------------------------------
+                            385 	.area ISEG    (DATA)
+                            386 ;--------------------------------------------------------
+                            387 ; absolute internal ram data
+                            388 ;--------------------------------------------------------
+                            389 	.area IABS    (ABS,DATA)
+                            390 	.area IABS    (ABS,DATA)
+                            391 ;--------------------------------------------------------
+                            392 ; bit data
+                            393 ;--------------------------------------------------------
+                            394 	.area BSEG    (BIT)
+                            395 ;--------------------------------------------------------
+                            396 ; paged external ram data
+                            397 ;--------------------------------------------------------
+                            398 	.area PSEG    (PAG,XDATA)
+                            399 ;--------------------------------------------------------
+                            400 ; external ram data
+                            401 ;--------------------------------------------------------
+                            402 	.area XSEG    (XDATA)
+                            403 ;--------------------------------------------------------
+                            404 ; absolute external ram data
+                            405 ;--------------------------------------------------------
+                            406 	.area XABS    (ABS,XDATA)
+                            407 ;--------------------------------------------------------
+                            408 ; external initialized ram data
+                            409 ;--------------------------------------------------------
+                            410 	.area XISEG   (XDATA)
+                            411 	.area HOME    (CODE)
+                            412 	.area GSINIT0 (CODE)
+                            413 	.area GSINIT1 (CODE)
+                            414 	.area GSINIT2 (CODE)
+                            415 	.area GSINIT3 (CODE)
+                            416 	.area GSINIT4 (CODE)
+                            417 	.area GSINIT5 (CODE)
+                            418 	.area GSINIT  (CODE)
+                            419 	.area GSFINAL (CODE)
+                            420 	.area CSEG    (CODE)
+                            421 ;--------------------------------------------------------
+                            422 ; interrupt vector 
+                            423 ;--------------------------------------------------------
+                            424 	.area HOME    (CODE)
+   0000                     425 __interrupt_vect:
+   0000 02s00r00            426 	ljmp	__sdcc_gsinit_startup
+   0003 02s01r2E            427 	ljmp	_KeyPressedInterrupt
+   0006                     428 	.ds	5
+   000B 02s00r76            429 	ljmp	_DelayExpired
+                            430 ;--------------------------------------------------------
+                            431 ; global & static initialisations
+                            432 ;--------------------------------------------------------
+                            433 	.area HOME    (CODE)
+                            434 	.area GSINIT  (CODE)
+                            435 	.area GSFINAL (CODE)
+                            436 	.area GSINIT  (CODE)
+                            437 	.globl __sdcc_gsinit_startup
+                            438 	.globl __sdcc_program_startup
+                            439 	.globl __start__stack
+                            440 	.globl __mcs51_genXINIT
+                            441 	.globl __mcs51_genXRAMCLEAR
+                            442 	.globl __mcs51_genRAMCLEAR
+                            443 ;	SRC/test_led.c:42: static char expressionByteNumber = 0;
+   0000 75*6F 00            444 	mov	_expressionByteNumber,#0x00
+                            445 ;	SRC/test_led.c:44: static char transmitting=0;
+   0003 75*70 00            446 	mov	_transmitting,#0x00
+                            447 ;	SRC/test_led.c:45: static char expressionReceiving=1;
+   0006 75*71 01            448 	mov	_expressionReceiving,#0x01
+                            449 ;	SRC/test_led.c:48: static char savedKeyChar = 0;
+   0009 75*72 00            450 	mov	_savedKeyChar,#0x00
+                            451 ;	SRC/test_led.c:50: static char delays=0;
+   000C 75*73 00            452 	mov	_delays,#0x00
+                            453 ;	SRC/test_led.c:52: static char number = 0;
+   000F 75*74 00            454 	mov	_number,#0x00
+                            455 	.area GSFINAL (CODE)
+   0000 02s00r0E            456 	ljmp	__sdcc_program_startup
+                            457 ;--------------------------------------------------------
+                            458 ; Home
+                            459 ;--------------------------------------------------------
+                            460 	.area HOME    (CODE)
+                            461 	.area HOME    (CODE)
+   000E                     462 __sdcc_program_startup:
+   000E 12s01r92            463 	lcall	_main
+                            464 ;	return from main will lock up
+   0011 80 FE               465 	sjmp .
+                            466 ;--------------------------------------------------------
+                            467 ; code
+                            468 ;--------------------------------------------------------
+                            469 	.area CSEG    (CODE)
+                            470 ;------------------------------------------------------------
+                            471 ;Allocation info for local variables in function 'checkExpression'
+                            472 ;------------------------------------------------------------
+                            473 ;------------------------------------------------------------
+                            474 ;	SRC/test_led.c:56: char checkExpression(){
+                            475 ;	-----------------------------------------
+                            476 ;	 function checkExpression
+                            477 ;	-----------------------------------------
+   0000                     478 _checkExpression:
+                    0002    479 	ar2 = 0x02
+                    0003    480 	ar3 = 0x03
+                    0004    481 	ar4 = 0x04
+                    0005    482 	ar5 = 0x05
+                    0006    483 	ar6 = 0x06
+                    0007    484 	ar7 = 0x07
+                    0000    485 	ar0 = 0x00
+                    0001    486 	ar1 = 0x01
+                            487 ;	SRC/test_led.c:57: return 1;
+   0000 75 82 01            488 	mov	dpl,#0x01
+   0003 22                  489 	ret
+                            490 ;------------------------------------------------------------
+                            491 ;Allocation info for local variables in function 'verifyAndSave'
+                            492 ;------------------------------------------------------------
+                            493 ;------------------------------------------------------------
+                            494 ;	SRC/test_led.c:61: void verifyAndSave(void)
+                            495 ;	-----------------------------------------
+                            496 ;	 function verifyAndSave
+                            497 ;	-----------------------------------------
+   0004                     498 _verifyAndSave:
+                            499 ;	SRC/test_led.c:63: if(tempForExpression[0]=='*'
+   0004 AA*6C               500 	mov	r2,_tempForExpression
+   0006 BA 2A 02            501 	cjne	r2,#0x2A,00117$
+   0009 80 11               502 	sjmp	00101$
+   000B                     503 00117$:
+                            504 ;	SRC/test_led.c:64: ||tempForExpression[0]=='#'
+   000B BA 23 02            505 	cjne	r2,#0x23,00118$
+   000E 80 0C               506 	sjmp	00101$
+   0010                     507 00118$:
+                            508 ;	SRC/test_led.c:65: ||tempForExpression[1]=='*'
+   0010 AB*6D               509 	mov	r3,(_tempForExpression + 0x0001)
+   0012 BB 2A 02            510 	cjne	r3,#0x2A,00119$
+   0015 80 05               511 	sjmp	00101$
+   0017                     512 00119$:
+                            513 ;	SRC/test_led.c:66: ||tempForExpression[2]=='*'){
+   0017 AC*6E               514 	mov	r4,(_tempForExpression + 0x0002)
+   0019 BC 2A 07            515 	cjne	r4,#0x2A,00102$
+   001C                     516 00101$:
+                            517 ;	SRC/test_led.c:67: expressionReceiving = 0;
+   001C 75*71 00            518 	mov	_expressionReceiving,#0x00
+                            519 ;	SRC/test_led.c:68: expressionByteNumber = 0;	
+   001F 75*6F 00            520 	mov	_expressionByteNumber,#0x00
+                            521 ;	SRC/test_led.c:69: return;
+   0022 22                  522 	ret
+   0023                     523 00102$:
+                            524 ;	SRC/test_led.c:72: if(tempForExpression[1]=='#'){
+   0023 BB 23 1E            525 	cjne	r3,#0x23,00107$
+                            526 ;	SRC/test_led.c:73: enqueue(&readBuffer,tempForExpression[0]);
+   0026 C0 02               527 	push	ar2
+   0028 90s00r00            528 	mov	dptr,#_readBuffer
+   002B 75 F0 40            529 	mov	b,#0x40
+   002E 12s00r00            530 	lcall	_enqueue
+   0031 15 81               531 	dec	sp
+                            532 ;	SRC/test_led.c:74: enqueue(&readBuffer,tempForExpression[1]);
+   0033 C0*6D               533 	push	(_tempForExpression + 0x0001)
+   0035 90s00r00            534 	mov	dptr,#_readBuffer
+   0038 75 F0 40            535 	mov	b,#0x40
+   003B 12s00r00            536 	lcall	_enqueue
+   003E 15 81               537 	dec	sp
+                            538 ;	SRC/test_led.c:75: expressionByteNumber = 0;
+   0040 75*6F 00            539 	mov	_expressionByteNumber,#0x00
+                            540 ;	SRC/test_led.c:77: return;
+   0043 22                  541 	ret
+   0044                     542 00107$:
+                            543 ;	SRC/test_led.c:79: if(tempForExpression[2]=='#'){
+   0044 BC 23 2B            544 	cjne	r4,#0x23,00109$
+                            545 ;	SRC/test_led.c:80: enqueue(&readBuffer,tempForExpression[0]);
+   0047 C0 02               546 	push	ar2
+   0049 90s00r00            547 	mov	dptr,#_readBuffer
+   004C 75 F0 40            548 	mov	b,#0x40
+   004F 12s00r00            549 	lcall	_enqueue
+   0052 15 81               550 	dec	sp
+                            551 ;	SRC/test_led.c:81: enqueue(&readBuffer,tempForExpression[1]);
+   0054 C0*6D               552 	push	(_tempForExpression + 0x0001)
+   0056 90s00r00            553 	mov	dptr,#_readBuffer
+   0059 75 F0 40            554 	mov	b,#0x40
+   005C 12s00r00            555 	lcall	_enqueue
+   005F 15 81               556 	dec	sp
+                            557 ;	SRC/test_led.c:82: enqueue(&readBuffer,tempForExpression[2]);
+   0061 C0*6E               558 	push	(_tempForExpression + 0x0002)
+   0063 90s00r00            559 	mov	dptr,#_readBuffer
+   0066 75 F0 40            560 	mov	b,#0x40
+   0069 12s00r00            561 	lcall	_enqueue
+   006C 15 81               562 	dec	sp
+                            563 ;	SRC/test_led.c:83: expressionByteNumber = 0;
+   006E 75*6F 00            564 	mov	_expressionByteNumber,#0x00
+                            565 ;	SRC/test_led.c:84: return;
+                            566 ;	SRC/test_led.c:86: expressionByteNumber = 0;
+   0071 22                  567 	ret
+   0072                     568 00109$:
+   0072 75*6F 00            569 	mov	_expressionByteNumber,#0x00
+   0075 22                  570 	ret
+                            571 ;------------------------------------------------------------
+                            572 ;Allocation info for local variables in function 'DelayExpired'
+                            573 ;------------------------------------------------------------
+                            574 ;------------------------------------------------------------
+                            575 ;	SRC/test_led.c:90: void DelayExpired(void) __interrupt (1){
+                            576 ;	-----------------------------------------
+                            577 ;	 function DelayExpired
+                            578 ;	-----------------------------------------
+   0076                     579 _DelayExpired:
+   0076 C0*00               580 	push	bits
+   0078 C0 E0               581 	push	acc
+   007A C0 F0               582 	push	b
+   007C C0 82               583 	push	dpl
+   007E C0 83               584 	push	dph
+   0080 C0 02               585 	push	(0+2)
+   0082 C0 03               586 	push	(0+3)
+   0084 C0 04               587 	push	(0+4)
+   0086 C0 05               588 	push	(0+5)
+   0088 C0 06               589 	push	(0+6)
+   008A C0 07               590 	push	(0+7)
+   008C C0 00               591 	push	(0+0)
+   008E C0 01               592 	push	(0+1)
+   0090 C0 D0               593 	push	psw
+   0092 75 D0 00            594 	mov	psw,#0x00
+                            595 ;	SRC/test_led.c:91: delays = 0;
+   0095 75*73 00            596 	mov	_delays,#0x00
+                            597 ;	SRC/test_led.c:93: if( kb_read_button_code() == savedKeyChar){
+   0098 12s00r00            598 	lcall	_kb_read_button_code
+   009B E5 82               599 	mov	a,dpl
+   009D FA                  600 	mov	r2,a
+   009E B5*72 02            601 	cjne	a,_savedKeyChar,00117$
+   00A1 80 03               602 	sjmp	00118$
+   00A3                     603 00117$:
+   00A3 02s01r11            604 	ljmp	00111$
+   00A6                     605 00118$:
+                            606 ;	SRC/test_led.c:94: if(savedKeyChar=='*'){
+   00A6 74 2A               607 	mov	a,#0x2A
+   00A8 B5*72 1A            608 	cjne	a,_savedKeyChar,00102$
+                            609 ;	SRC/test_led.c:95: enqueue(&interruptWriteBuffer,'\n');
+   00AB 74 0A               610 	mov	a,#0x0A
+   00AD C0 E0               611 	push	acc
+   00AF 90s00r48            612 	mov	dptr,#_interruptWriteBuffer
+   00B2 75 F0 40            613 	mov	b,#0x40
+   00B5 12s00r00            614 	lcall	_enqueue
+   00B8 15 81               615 	dec	sp
+                            616 ;	SRC/test_led.c:96: beginTranslation();
+   00BA 12s00r00            617 	lcall	_beginTranslation
+                            618 ;	SRC/test_led.c:97: expressionByteNumber=0;
+   00BD 75*6F 00            619 	mov	_expressionByteNumber,#0x00
+                            620 ;	SRC/test_led.c:98: expressionReceiving = 1;
+   00C0 75*71 01            621 	mov	_expressionReceiving,#0x01
+                            622 ;	SRC/test_led.c:99: return;
+   00C3 80 4C               623 	sjmp	00111$
+   00C5                     624 00102$:
+                            625 ;	SRC/test_led.c:101: if(expressionReceiving){
+   00C5 E5*71               626 	mov	a,_expressionReceiving
+   00C7 60 12               627 	jz	00104$
+                            628 ;	SRC/test_led.c:102: enqueue(&interruptWriteBuffer,savedKeyChar);
+   00C9 C0*72               629 	push	_savedKeyChar
+   00CB 90s00r48            630 	mov	dptr,#_interruptWriteBuffer
+   00CE 75 F0 40            631 	mov	b,#0x40
+   00D1 12s00r00            632 	lcall	_enqueue
+   00D4 15 81               633 	dec	sp
+                            634 ;	SRC/test_led.c:103: beginTranslation();
+   00D6 12s00r00            635 	lcall	_beginTranslation
+                            636 ;	SRC/test_led.c:104: ET0 = 0;
+   00D9 C2 A9               637 	clr	_ET0
+   00DB                     638 00104$:
+                            639 ;	SRC/test_led.c:106: if(savedKeyChar == '#' || expressionByteNumber==2){			
+   00DB 74 23               640 	mov	a,#0x23
+   00DD B5*72 02            641 	cjne	a,_savedKeyChar,00122$
+   00E0 80 05               642 	sjmp	00105$
+   00E2                     643 00122$:
+   00E2 74 02               644 	mov	a,#0x02
+   00E4 B5*6F 21            645 	cjne	a,_expressionByteNumber,00106$
+   00E7                     646 00105$:
+                            647 ;	SRC/test_led.c:107: tempForExpression[expressionByteNumber]=savedKeyChar;
+   00E7 E5*6F               648 	mov	a,_expressionByteNumber
+   00E9 24r6C               649 	add	a,#_tempForExpression
+   00EB F8                  650 	mov	r0,a
+   00EC A6*72               651 	mov	@r0,_savedKeyChar
+                            652 ;	SRC/test_led.c:108: expressionReceiving = 0;
+   00EE 75*71 00            653 	mov	_expressionReceiving,#0x00
+                            654 ;	SRC/test_led.c:109: enqueue(&interruptWriteBuffer,'\n');
+   00F1 74 0A               655 	mov	a,#0x0A
+   00F3 C0 E0               656 	push	acc
+   00F5 90s00r48            657 	mov	dptr,#_interruptWriteBuffer
+   00F8 75 F0 40            658 	mov	b,#0x40
+   00FB 12s00r00            659 	lcall	_enqueue
+   00FE 15 81               660 	dec	sp
+                            661 ;	SRC/test_led.c:110: beginTranslation();
+   0100 12s00r00            662 	lcall	_beginTranslation
+                            663 ;	SRC/test_led.c:111: verifyAndSave();
+   0103 12s00r04            664 	lcall	_verifyAndSave
+   0106 80 09               665 	sjmp	00111$
+   0108                     666 00106$:
+                            667 ;	SRC/test_led.c:114: tempForExpression[expressionByteNumber]=savedKeyChar;
+   0108 E5*6F               668 	mov	a,_expressionByteNumber
+   010A 24r6C               669 	add	a,#_tempForExpression
+   010C F8                  670 	mov	r0,a
+   010D A6*72               671 	mov	@r0,_savedKeyChar
+                            672 ;	SRC/test_led.c:115: expressionByteNumber++;
+   010F 05*6F               673 	inc	_expressionByteNumber
+   0111                     674 00111$:
+   0111 D0 D0               675 	pop	psw
+   0113 D0 01               676 	pop	(0+1)
+   0115 D0 00               677 	pop	(0+0)
+   0117 D0 07               678 	pop	(0+7)
+   0119 D0 06               679 	pop	(0+6)
+   011B D0 05               680 	pop	(0+5)
+   011D D0 04               681 	pop	(0+4)
+   011F D0 03               682 	pop	(0+3)
+   0121 D0 02               683 	pop	(0+2)
+   0123 D0 83               684 	pop	dph
+   0125 D0 82               685 	pop	dpl
+   0127 D0 F0               686 	pop	b
+   0129 D0 E0               687 	pop	acc
+   012B D0*00               688 	pop	bits
+   012D 32                  689 	reti
+                            690 ;------------------------------------------------------------
+                            691 ;Allocation info for local variables in function 'KeyPressedInterrupt'
+                            692 ;------------------------------------------------------------
+                            693 ;buttonPressed             Allocated to registers r2 
+                            694 ;------------------------------------------------------------
+                            695 ;	SRC/test_led.c:121: void KeyPressedInterrupt(void) __interrupt (0){
+                            696 ;	-----------------------------------------
+                            697 ;	 function KeyPressedInterrupt
+                            698 ;	-----------------------------------------
+   012E                     699 _KeyPressedInterrupt:
+   012E C0*00               700 	push	bits
+   0130 C0 E0               701 	push	acc
+   0132 C0 F0               702 	push	b
+   0134 C0 82               703 	push	dpl
+   0136 C0 83               704 	push	dph
+   0138 C0 02               705 	push	(0+2)
+   013A C0 03               706 	push	(0+3)
+   013C C0 04               707 	push	(0+4)
+   013E C0 05               708 	push	(0+5)
+   0140 C0 06               709 	push	(0+6)
+   0142 C0 07               710 	push	(0+7)
+   0144 C0 00               711 	push	(0+0)
+   0146 C0 01               712 	push	(0+1)
+   0148 C0 D0               713 	push	psw
+   014A 75 D0 00            714 	mov	psw,#0x00
+                            715 ;	SRC/test_led.c:123: number++;
+   014D 05*74               716 	inc	_number
+                            717 ;	SRC/test_led.c:125: expressionReceiving=1;
+   014F 75*71 01            718 	mov	_expressionReceiving,#0x01
+                            719 ;	SRC/test_led.c:126: if(delays)
+   0152 E5*73               720 	mov	a,_delays
+   0154 60 02               721 	jz	00102$
+                            722 ;	SRC/test_led.c:127: return;
+   0156 80 1D               723 	sjmp	00107$
+   0158                     724 00102$:
+                            725 ;	SRC/test_led.c:129: buttonPressed = kb_read_button_code();
+   0158 12s00r00            726 	lcall	_kb_read_button_code
+   015B AA 82               727 	mov	r2,dpl
+                            728 ;	SRC/test_led.c:130: if (buttonPressed == -1||buttonPressed==-2){
+   015D BA FF 02            729 	cjne	r2,#0xFF,00112$
+   0160 80 03               730 	sjmp	00103$
+   0162                     731 00112$:
+   0162 BA FE 02            732 	cjne	r2,#0xFE,00104$
+   0165                     733 00103$:
+                            734 ;	SRC/test_led.c:132: return;
+   0165 80 0E               735 	sjmp	00107$
+   0167                     736 00104$:
+                            737 ;	SRC/test_led.c:135: delays = 1;
+   0167 75*73 01            738 	mov	_delays,#0x01
+                            739 ;	SRC/test_led.c:136: savedKeyChar = buttonPressed;
+   016A 8A*72               740 	mov	_savedKeyChar,r2
+                            741 ;	SRC/test_led.c:137: SetDelayTimer(0xffff);
+   016C 90 FF FF            742 	mov	dptr,#0xFFFF
+   016F 12s00r00            743 	lcall	_SetDelayTimer
+                            744 ;	SRC/test_led.c:139: TCON&=0xFD;
+   0172 53 88 FD            745 	anl	_TCON,#0xFD
+   0175                     746 00107$:
+   0175 D0 D0               747 	pop	psw
+   0177 D0 01               748 	pop	(0+1)
+   0179 D0 00               749 	pop	(0+0)
+   017B D0 07               750 	pop	(0+7)
+   017D D0 06               751 	pop	(0+6)
+   017F D0 05               752 	pop	(0+5)
+   0181 D0 04               753 	pop	(0+4)
+   0183 D0 03               754 	pop	(0+3)
+   0185 D0 02               755 	pop	(0+2)
+   0187 D0 83               756 	pop	dph
+   0189 D0 82               757 	pop	dpl
+   018B D0 F0               758 	pop	b
+   018D D0 E0               759 	pop	acc
+   018F D0*00               760 	pop	bits
+   0191 32                  761 	reti
+                            762 ;------------------------------------------------------------
+                            763 ;Allocation info for local variables in function 'main'
+                            764 ;------------------------------------------------------------
+                            765 ;first                     Allocated to registers r2 
+                            766 ;second                    Allocated to registers r3 
+                            767 ;third                     Allocated to registers 
+                            768 ;hundredsDec               Allocated to registers r2 
+                            769 ;dozensDec                 Allocated to registers r4 
+                            770 ;unitsDec                  Allocated to registers r3 
+                            771 ;result                    Allocated to registers r3 
+                            772 ;firstValue                Allocated to registers r4 
+                            773 ;secondValue               Allocated to registers r5 
+                            774 ;------------------------------------------------------------
+                            775 ;	SRC/test_led.c:146: void main (void) {
+                            776 ;	-----------------------------------------
+                            777 ;	 function main
+                            778 ;	-----------------------------------------
+   0192                     779 _main:
+                            780 ;	SRC/test_led.c:152: queueInit(&writeBuffer);
+   0192 90s00r24            781 	mov	dptr,#_writeBuffer
+   0195 75 F0 40            782 	mov	b,#0x40
+   0198 12s00r00            783 	lcall	_queueInit
+                            784 ;	SRC/test_led.c:153: queueInit(&readBuffer);
+   019B 90s00r00            785 	mov	dptr,#_readBuffer
+   019E 75 F0 40            786 	mov	b,#0x40
+   01A1 12s00r00            787 	lcall	_queueInit
+                            788 ;	SRC/test_led.c:154: write_max(ENA,0x60);
+   01A4 74 60               789 	mov	a,#0x60
+   01A6 C0 E0               790 	push	acc
+   01A8 90 00 04            791 	mov	dptr,#0x0004
+   01AB 12s00r00            792 	lcall	_write_max
+   01AE 15 81               793 	dec	sp
+                            794 ;	SRC/test_led.c:156: initUart(&writeBuffer,&interruptWriteBuffer);
+   01B0 74r48               795 	mov	a,#_interruptWriteBuffer
+   01B2 C0 E0               796 	push	acc
+   01B4 74s00               797 	mov	a,#(_interruptWriteBuffer >> 8)
+   01B6 C0 E0               798 	push	acc
+   01B8 74 40               799 	mov	a,#0x40
+   01BA C0 E0               800 	push	acc
+   01BC 90s00r24            801 	mov	dptr,#_writeBuffer
+   01BF 75 F0 40            802 	mov	b,#0x40
+   01C2 12s00r00            803 	lcall	_initUart
+   01C5 15 81               804 	dec	sp
+   01C7 15 81               805 	dec	sp
+   01C9 15 81               806 	dec	sp
+                            807 ;	SRC/test_led.c:157: SetVector(0x2003, (void*)KeyPressedInterrupt);
+   01CB 7Ar2E               808 	mov	r2,#_KeyPressedInterrupt
+   01CD 7Bs01               809 	mov	r3,#(_KeyPressedInterrupt >> 8)
+   01CF 7C 80               810 	mov	r4,#0x80
+   01D1 C0 02               811 	push	ar2
+   01D3 C0 03               812 	push	ar3
+   01D5 C0 04               813 	push	ar4
+   01D7 90 20 03            814 	mov	dptr,#0x2003
+   01DA 12s00r00            815 	lcall	_SetVector
+   01DD 15 81               816 	dec	sp
+   01DF 15 81               817 	dec	sp
+   01E1 15 81               818 	dec	sp
+                            819 ;	SRC/test_led.c:158: EX0=1;
+   01E3 D2 A8               820 	setb	_EX0
+                            821 ;	SRC/test_led.c:160: TCON|=0x01;
+   01E5 43 88 01            822 	orl	_TCON,#0x01
+                            823 ;	SRC/test_led.c:161: SetVector(0x200B, (void*)DelayExpired);
+   01E8 7Ar76               824 	mov	r2,#_DelayExpired
+   01EA 7Bs00               825 	mov	r3,#(_DelayExpired >> 8)
+   01EC 7C 80               826 	mov	r4,#0x80
+   01EE C0 02               827 	push	ar2
+   01F0 C0 03               828 	push	ar3
+   01F2 C0 04               829 	push	ar4
+   01F4 90 20 0B            830 	mov	dptr,#0x200B
+   01F7 12s00r00            831 	lcall	_SetVector
+   01FA 15 81               832 	dec	sp
+   01FC 15 81               833 	dec	sp
+   01FE 15 81               834 	dec	sp
+                            835 ;	SRC/test_led.c:162: ET0 = 1;
+   0200 D2 A9               836 	setb	_ET0
+                            837 ;	SRC/test_led.c:163: EA = 1;
+   0202 D2 AF               838 	setb	_EA
+                            839 ;	SRC/test_led.c:165: SetDelayTimer(0xffff);
+   0204 90 FF FF            840 	mov	dptr,#0xFFFF
+   0207 12s00r00            841 	lcall	_SetDelayTimer
+                            842 ;	SRC/test_led.c:167: enqueue(&writeBuffer, 'g');
+   020A 74 67               843 	mov	a,#0x67
+   020C C0 E0               844 	push	acc
+   020E 90s00r24            845 	mov	dptr,#_writeBuffer
+   0211 75 F0 40            846 	mov	b,#0x40
+   0214 12s00r00            847 	lcall	_enqueue
+   0217 15 81               848 	dec	sp
+                            849 ;	SRC/test_led.c:168: beginTranslation();	
+   0219 12s00r00            850 	lcall	_beginTranslation
+   021C                     851 00124$:
+                            852 ;	SRC/test_led.c:172: first = dequeue(&readBuffer);
+   021C 90s00r00            853 	mov	dptr,#_readBuffer
+   021F 75 F0 40            854 	mov	b,#0x40
+   0222 12s00r00            855 	lcall	_dequeue
+                            856 ;	SRC/test_led.c:174: if (first==0)			
+   0225 E5 82               857 	mov	a,dpl
+   0227 FA                  858 	mov	r2,a
+   0228 60 F2               859 	jz	00124$
+                            860 ;	SRC/test_led.c:178: second = dequeue(&readBuffer);
+   022A 90s00r00            861 	mov	dptr,#_readBuffer
+   022D 75 F0 40            862 	mov	b,#0x40
+   0230 C0 02               863 	push	ar2
+   0232 12s00r00            864 	lcall	_dequeue
+   0235 AB 82               865 	mov	r3,dpl
+   0237 D0 02               866 	pop	ar2
+                            867 ;	SRC/test_led.c:179: if(second != '#'){
+   0239 BB 23 02            868 	cjne	r3,#0x23,00138$
+   023C 80 3A               869 	sjmp	00113$
+   023E                     870 00138$:
+                            871 ;	SRC/test_led.c:180: third = dequeue(&readBuffer);
+   023E 90s00r00            872 	mov	dptr,#_readBuffer
+   0241 75 F0 40            873 	mov	b,#0x40
+   0244 C0 02               874 	push	ar2
+   0246 C0 03               875 	push	ar3
+   0248 12s00r00            876 	lcall	_dequeue
+   024B D0 03               877 	pop	ar3
+   024D D0 02               878 	pop	ar2
+                            879 ;	SRC/test_led.c:181: if(first>='A')
+   024F BA 41 00            880 	cjne	r2,#0x41,00139$
+   0252                     881 00139$:
+   0252 40 06               882 	jc	00104$
+                            883 ;	SRC/test_led.c:182: firstValue=first-'A'+0xA;
+   0254 74 C9               884 	mov	a,#0xC9
+   0256 2A                  885 	add	a,r2
+   0257 FC                  886 	mov	r4,a
+   0258 80 04               887 	sjmp	00105$
+   025A                     888 00104$:
+                            889 ;	SRC/test_led.c:184: firstValue=first-'0';
+   025A EA                  890 	mov	a,r2
+   025B 24 D0               891 	add	a,#0xd0
+   025D FC                  892 	mov	r4,a
+   025E                     893 00105$:
+                            894 ;	SRC/test_led.c:185: if(second>='A')
+   025E BB 41 00            895 	cjne	r3,#0x41,00141$
+   0261                     896 00141$:
+   0261 40 06               897 	jc	00107$
+                            898 ;	SRC/test_led.c:186: secondValue=second-'A'+0xA;
+   0263 74 C9               899 	mov	a,#0xC9
+   0265 2B                  900 	add	a,r3
+   0266 FD                  901 	mov	r5,a
+   0267 80 04               902 	sjmp	00108$
+   0269                     903 00107$:
+                            904 ;	SRC/test_led.c:188: secondValue=second-'0';
+   0269 EB                  905 	mov	a,r3
+   026A 24 D0               906 	add	a,#0xd0
+   026C FD                  907 	mov	r5,a
+   026D                     908 00108$:
+                            909 ;	SRC/test_led.c:189: result = (firstValue<<4)+(secondValue);
+   026D EC                  910 	mov	a,r4
+   026E C4                  911 	swap	a
+   026F 54 F0               912 	anl	a,#0xf0
+   0271 FB                  913 	mov	r3,a
+   0272 ED                  914 	mov	a,r5
+   0273 2B                  915 	add	a,r3
+   0274 FD                  916 	mov	r5,a
+   0275 FB                  917 	mov	r3,a
+   0276 80 11               918 	sjmp	00114$
+   0278                     919 00113$:
+                            920 ;	SRC/test_led.c:192: if(first>='A')
+   0278 BA 41 00            921 	cjne	r2,#0x41,00143$
+   027B                     922 00143$:
+   027B 40 06               923 	jc	00110$
+                            924 ;	SRC/test_led.c:193: firstValue=first-'A'+0xA;
+   027D 74 C9               925 	mov	a,#0xC9
+   027F 2A                  926 	add	a,r2
+   0280 FC                  927 	mov	r4,a
+   0281 80 04               928 	sjmp	00111$
+   0283                     929 00110$:
+                            930 ;	SRC/test_led.c:195: firstValue=first-'0';
+   0283 EA                  931 	mov	a,r2
+   0284 24 D0               932 	add	a,#0xd0
+   0286 FC                  933 	mov	r4,a
+   0287                     934 00111$:
+                            935 ;	SRC/test_led.c:196: result = firstValue;
+   0287 8C 03               936 	mov	ar3,r4
+   0289                     937 00114$:
+                            938 ;	SRC/test_led.c:199: hundredsDec = result/100;
+   0289 75 F0 64            939 	mov	b,#0x64
+   028C EB                  940 	mov	a,r3
+   028D 84                  941 	div	ab
+   028E FA                  942 	mov	r2,a
+                            943 ;	SRC/test_led.c:200: if (result>=100)
+   028F BB 64 00            944 	cjne	r3,#0x64,00145$
+   0292                     945 00145$:
+   0292 40 0F               946 	jc	00116$
+                            947 ;	SRC/test_led.c:201: dozensDec = (result%100)/10;
+   0294 75 F0 64            948 	mov	b,#0x64
+   0297 EB                  949 	mov	a,r3
+   0298 84                  950 	div	ab
+   0299 AC F0               951 	mov	r4,b
+   029B 75 F0 0A            952 	mov	b,#0x0A
+   029E EC                  953 	mov	a,r4
+   029F 84                  954 	div	ab
+   02A0 FC                  955 	mov	r4,a
+   02A1 80 06               956 	sjmp	00117$
+   02A3                     957 00116$:
+                            958 ;	SRC/test_led.c:203: dozensDec = result/10;
+   02A3 75 F0 0A            959 	mov	b,#0x0A
+   02A6 EB                  960 	mov	a,r3
+   02A7 84                  961 	div	ab
+   02A8 FC                  962 	mov	r4,a
+   02A9                     963 00117$:
+                            964 ;	SRC/test_led.c:204: unitsDec = result%10;
+   02A9 75 F0 0A            965 	mov	b,#0x0A
+   02AC EB                  966 	mov	a,r3
+   02AD 84                  967 	div	ab
+   02AE AB F0               968 	mov	r3,b
+                            969 ;	SRC/test_led.c:205: if(hundredsDec!=0)
+   02B0 EA                  970 	mov	a,r2
+   02B1 60 1D               971 	jz	00119$
+                            972 ;	SRC/test_led.c:206: enqueue(&writeBuffer, hundredsDec+'0');
+   02B3 74 30               973 	mov	a,#0x30
+   02B5 2A                  974 	add	a,r2
+   02B6 FD                  975 	mov	r5,a
+   02B7 C0 02               976 	push	ar2
+   02B9 C0 03               977 	push	ar3
+   02BB C0 04               978 	push	ar4
+   02BD C0 05               979 	push	ar5
+   02BF 90s00r24            980 	mov	dptr,#_writeBuffer
+   02C2 75 F0 40            981 	mov	b,#0x40
+   02C5 12s00r00            982 	lcall	_enqueue
+   02C8 15 81               983 	dec	sp
+   02CA D0 04               984 	pop	ar4
+   02CC D0 03               985 	pop	ar3
+   02CE D0 02               986 	pop	ar2
+   02D0                     987 00119$:
+                            988 ;	SRC/test_led.c:207: if(dozensDec!=0||hundredsDec!=0)
+   02D0 EC                  989 	mov	a,r4
+   02D1 70 03               990 	jnz	00120$
+   02D3 EA                  991 	mov	a,r2
+   02D4 60 15               992 	jz	00121$
+   02D6                     993 00120$:
+                            994 ;	SRC/test_led.c:208: enqueue(&writeBuffer, dozensDec + '0');			
+   02D6 74 30               995 	mov	a,#0x30
+   02D8 2C                  996 	add	a,r4
+   02D9 FC                  997 	mov	r4,a
+   02DA C0 03               998 	push	ar3
+   02DC C0 04               999 	push	ar4
+   02DE 90s00r24           1000 	mov	dptr,#_writeBuffer
+   02E1 75 F0 40           1001 	mov	b,#0x40
+   02E4 12s00r00           1002 	lcall	_enqueue
+   02E7 15 81              1003 	dec	sp
+   02E9 D0 03              1004 	pop	ar3
+   02EB                    1005 00121$:
+                           1006 ;	SRC/test_led.c:209: enqueue(&writeBuffer, unitsDec +'0');
+   02EB 74 30              1007 	mov	a,#0x30
+   02ED 2B                 1008 	add	a,r3
+   02EE FB                 1009 	mov	r3,a
+   02EF C0 03              1010 	push	ar3
+   02F1 90s00r24           1011 	mov	dptr,#_writeBuffer
+   02F4 75 F0 40           1012 	mov	b,#0x40
+   02F7 12s00r00           1013 	lcall	_enqueue
+   02FA 15 81              1014 	dec	sp
+                           1015 ;	SRC/test_led.c:210: beginTranslation();
+   02FC 12s00r00           1016 	lcall	_beginTranslation
+   02FF 02s02r1C           1017 	ljmp	00124$
+                           1018 	.area CSEG    (CODE)
+                           1019 	.area CONST   (CODE)
+                           1020 	.area XINIT   (CODE)
+                           1021 	.area CABS    (ABS,CODE)

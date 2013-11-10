@@ -1,0 +1,316 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 2.9.0 #5416 (Mar 22 2009) (UNIX)
+                              4 ; This file was generated Sun Nov 10 18:56:34 2013
+                              5 ;--------------------------------------------------------
+                              6 	.module keyboard
+                              7 	.optsdcc -mmcs51 --model-small
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _kb_read_button_code
+                             13 	.globl _kb_read_row_number
+                             14 	.globl _kb_select_col
+                             15 	.globl _kb_wtite_col
+                             16 	.globl _kb_read_row
+                             17 ;--------------------------------------------------------
+                             18 ; special function registers
+                             19 ;--------------------------------------------------------
+                             20 	.area RSEG    (DATA)
+                             21 ;--------------------------------------------------------
+                             22 ; special function bits
+                             23 ;--------------------------------------------------------
+                             24 	.area RSEG    (DATA)
+                             25 ;--------------------------------------------------------
+                             26 ; overlayable register banks
+                             27 ;--------------------------------------------------------
+                             28 	.area REG_BANK_0	(REL,OVR,DATA)
+   0000                      29 	.ds 8
+                             30 ;--------------------------------------------------------
+                             31 ; internal ram data
+                             32 ;--------------------------------------------------------
+                             33 	.area DSEG    (DATA)
+   0000                      34 _symbolTable:
+   0000                      35 	.ds 16
+                             36 ;--------------------------------------------------------
+                             37 ; overlayable items in internal ram 
+                             38 ;--------------------------------------------------------
+                             39 	.area OSEG    (OVR,DATA)
+                             40 ;--------------------------------------------------------
+                             41 ; indirectly addressable internal ram data
+                             42 ;--------------------------------------------------------
+                             43 	.area ISEG    (DATA)
+                             44 ;--------------------------------------------------------
+                             45 ; absolute internal ram data
+                             46 ;--------------------------------------------------------
+                             47 	.area IABS    (ABS,DATA)
+                             48 	.area IABS    (ABS,DATA)
+                             49 ;--------------------------------------------------------
+                             50 ; bit data
+                             51 ;--------------------------------------------------------
+                             52 	.area BSEG    (BIT)
+                             53 ;--------------------------------------------------------
+                             54 ; paged external ram data
+                             55 ;--------------------------------------------------------
+                             56 	.area PSEG    (PAG,XDATA)
+                             57 ;--------------------------------------------------------
+                             58 ; external ram data
+                             59 ;--------------------------------------------------------
+                             60 	.area XSEG    (XDATA)
+                             61 ;--------------------------------------------------------
+                             62 ; absolute external ram data
+                             63 ;--------------------------------------------------------
+                             64 	.area XABS    (ABS,XDATA)
+                             65 ;--------------------------------------------------------
+                             66 ; external initialized ram data
+                             67 ;--------------------------------------------------------
+                             68 	.area XISEG   (XDATA)
+                             69 	.area HOME    (CODE)
+                             70 	.area GSINIT0 (CODE)
+                             71 	.area GSINIT1 (CODE)
+                             72 	.area GSINIT2 (CODE)
+                             73 	.area GSINIT3 (CODE)
+                             74 	.area GSINIT4 (CODE)
+                             75 	.area GSINIT5 (CODE)
+                             76 	.area GSINIT  (CODE)
+                             77 	.area GSFINAL (CODE)
+                             78 	.area CSEG    (CODE)
+                             79 ;--------------------------------------------------------
+                             80 ; global & static initialisations
+                             81 ;--------------------------------------------------------
+                             82 	.area HOME    (CODE)
+                             83 	.area GSINIT  (CODE)
+                             84 	.area GSFINAL (CODE)
+                             85 	.area GSINIT  (CODE)
+                             86 ;	SRC/keyboard.c:3: static char symbolTable[]={'1','2','3','A','4','5','6','B','7','8','9','C','*','0','#','D'};
+   0000 75*00 31             87 	mov	_symbolTable,#0x31
+   0003 75*01 32             88 	mov	(_symbolTable + 0x0001),#0x32
+   0006 75*02 33             89 	mov	(_symbolTable + 0x0002),#0x33
+   0009 75*03 41             90 	mov	(_symbolTable + 0x0003),#0x41
+   000C 75*04 34             91 	mov	(_symbolTable + 0x0004),#0x34
+   000F 75*05 35             92 	mov	(_symbolTable + 0x0005),#0x35
+   0012 75*06 36             93 	mov	(_symbolTable + 0x0006),#0x36
+   0015 75*07 42             94 	mov	(_symbolTable + 0x0007),#0x42
+   0018 75*08 37             95 	mov	(_symbolTable + 0x0008),#0x37
+   001B 75*09 38             96 	mov	(_symbolTable + 0x0009),#0x38
+   001E 75*0A 39             97 	mov	(_symbolTable + 0x000a),#0x39
+   0021 75*0B 43             98 	mov	(_symbolTable + 0x000b),#0x43
+   0024 75*0C 2A             99 	mov	(_symbolTable + 0x000c),#0x2A
+   0027 75*0D 30            100 	mov	(_symbolTable + 0x000d),#0x30
+   002A 75*0E 23            101 	mov	(_symbolTable + 0x000e),#0x23
+   002D 75*0F 44            102 	mov	(_symbolTable + 0x000f),#0x44
+                            103 ;--------------------------------------------------------
+                            104 ; Home
+                            105 ;--------------------------------------------------------
+                            106 	.area HOME    (CODE)
+                            107 	.area HOME    (CODE)
+                            108 ;--------------------------------------------------------
+                            109 ; code
+                            110 ;--------------------------------------------------------
+                            111 	.area CSEG    (CODE)
+                            112 ;------------------------------------------------------------
+                            113 ;Allocation info for local variables in function 'kb_read_row'
+                            114 ;------------------------------------------------------------
+                            115 ;------------------------------------------------------------
+                            116 ;	SRC/keyboard.c:5: unsigned char kb_read_row(void){
+                            117 ;	-----------------------------------------
+                            118 ;	 function kb_read_row
+                            119 ;	-----------------------------------------
+   0000                     120 _kb_read_row:
+                    0002    121 	ar2 = 0x02
+                    0003    122 	ar3 = 0x03
+                    0004    123 	ar4 = 0x04
+                    0005    124 	ar5 = 0x05
+                    0006    125 	ar6 = 0x06
+                    0007    126 	ar7 = 0x07
+                    0000    127 	ar0 = 0x00
+                    0001    128 	ar1 = 0x01
+                            129 ;	SRC/keyboard.c:6: return (read_max(KB)>>4);
+   0000 90 00 00            130 	mov	dptr,#0x0000
+   0003 12s00r00            131 	lcall	_read_max
+   0006 E5 82               132 	mov	a,dpl
+   0008 C4                  133 	swap	a
+   0009 54 0F               134 	anl	a,#0x0f
+   000B F5 82               135 	mov	dpl,a
+   000D 22                  136 	ret
+                            137 ;------------------------------------------------------------
+                            138 ;Allocation info for local variables in function 'kb_wtite_col'
+                            139 ;------------------------------------------------------------
+                            140 ;column                    Allocated to registers r2 
+                            141 ;------------------------------------------------------------
+                            142 ;	SRC/keyboard.c:10: void kb_wtite_col(unsigned char column){
+                            143 ;	-----------------------------------------
+                            144 ;	 function kb_wtite_col
+                            145 ;	-----------------------------------------
+   000E                     146 _kb_wtite_col:
+   000E AA 82               147 	mov	r2,dpl
+                            148 ;	SRC/keyboard.c:11: write_max(KB, column);
+   0010 C0 02               149 	push	ar2
+   0012 90 00 00            150 	mov	dptr,#0x0000
+   0015 12s00r00            151 	lcall	_write_max
+   0018 15 81               152 	dec	sp
+   001A 22                  153 	ret
+                            154 ;------------------------------------------------------------
+                            155 ;Allocation info for local variables in function 'kb_select_col'
+                            156 ;------------------------------------------------------------
+                            157 ;columnNumber              Allocated to registers r2 
+                            158 ;columnValue               Allocated to registers r2 
+                            159 ;------------------------------------------------------------
+                            160 ;	SRC/keyboard.c:15: void kb_select_col(unsigned char columnNumber){
+                            161 ;	-----------------------------------------
+                            162 ;	 function kb_select_col
+                            163 ;	-----------------------------------------
+   001B                     164 _kb_select_col:
+   001B AA 82               165 	mov	r2,dpl
+                            166 ;	SRC/keyboard.c:17: columnValue<<=columnNumber;
+   001D 8A F0               167 	mov	b,r2
+   001F 05 F0               168 	inc	b
+   0021 74 01               169 	mov	a,#0x01
+   0023 80 02               170 	sjmp	00105$
+   0025                     171 00103$:
+   0025 25 E0               172 	add	a,acc
+   0027                     173 00105$:
+   0027 D5 F0 FB            174 	djnz	b,00103$
+                            175 ;	SRC/keyboard.c:18: kb_wtite_col(~columnValue);
+   002A F4                  176 	cpl	a
+   002B F5 82               177 	mov	dpl,a
+   002D 02s00r0E            178 	ljmp	_kb_wtite_col
+                            179 ;------------------------------------------------------------
+                            180 ;Allocation info for local variables in function 'kb_read_row_number'
+                            181 ;------------------------------------------------------------
+                            182 ;read_row_result           Allocated to registers r2 
+                            183 ;------------------------------------------------------------
+                            184 ;	SRC/keyboard.c:23: char kb_read_row_number(){
+                            185 ;	-----------------------------------------
+                            186 ;	 function kb_read_row_number
+                            187 ;	-----------------------------------------
+   0030                     188 _kb_read_row_number:
+                            189 ;	SRC/keyboard.c:27: read_row_result = kb_read_row();
+   0030 12s00r00            190 	lcall	_kb_read_row
+   0033 AA 82               191 	mov	r2,dpl
+                            192 ;	SRC/keyboard.c:28: switch (read_row_result){
+   0035 BA 07 02            193 	cjne	r2,#0x07,00114$
+   0038 80 20               194 	sjmp	00104$
+   003A                     195 00114$:
+   003A BA 0B 02            196 	cjne	r2,#0x0B,00115$
+   003D 80 17               197 	sjmp	00103$
+   003F                     198 00115$:
+   003F BA 0D 02            199 	cjne	r2,#0x0D,00116$
+   0042 80 0E               200 	sjmp	00102$
+   0044                     201 00116$:
+   0044 BA 0E 02            202 	cjne	r2,#0x0E,00117$
+   0047 80 05               203 	sjmp	00101$
+   0049                     204 00117$:
+                            205 ;	SRC/keyboard.c:29: case 0x0E:
+   0049 BA 0F 16            206 	cjne	r2,#0x0F,00106$
+   004C 80 10               207 	sjmp	00105$
+   004E                     208 00101$:
+                            209 ;	SRC/keyboard.c:30: return 0;
+   004E 75 82 00            210 	mov	dpl,#0x00
+                            211 ;	SRC/keyboard.c:31: case 0x0D:
+   0051 22                  212 	ret
+   0052                     213 00102$:
+                            214 ;	SRC/keyboard.c:32: return 1;
+   0052 75 82 01            215 	mov	dpl,#0x01
+                            216 ;	SRC/keyboard.c:33: case 0x0B:
+   0055 22                  217 	ret
+   0056                     218 00103$:
+                            219 ;	SRC/keyboard.c:34: return 2;
+   0056 75 82 02            220 	mov	dpl,#0x02
+                            221 ;	SRC/keyboard.c:35: case 0x07:
+   0059 22                  222 	ret
+   005A                     223 00104$:
+                            224 ;	SRC/keyboard.c:36: return 3;
+   005A 75 82 03            225 	mov	dpl,#0x03
+                            226 ;	SRC/keyboard.c:37: case 0x0F:
+   005D 22                  227 	ret
+   005E                     228 00105$:
+                            229 ;	SRC/keyboard.c:38: return -2;
+   005E 75 82 FE            230 	mov	dpl,#0xFE
+                            231 ;	SRC/keyboard.c:39: }
+                            232 ;	SRC/keyboard.c:40: return -1;
+   0061 22                  233 	ret
+   0062                     234 00106$:
+   0062 75 82 FF            235 	mov	dpl,#0xFF
+   0065 22                  236 	ret
+                            237 ;------------------------------------------------------------
+                            238 ;Allocation info for local variables in function 'kb_read_button_code'
+                            239 ;------------------------------------------------------------
+                            240 ;pressed                   Allocated to registers 
+                            241 ;btnNumber                 Allocated to registers r2 
+                            242 ;rowNumber                 Allocated to registers r4 
+                            243 ;i                         Allocated to registers r3 
+                            244 ;tempi                     Allocated to registers 
+                            245 ;------------------------------------------------------------
+                            246 ;	SRC/keyboard.c:45: char kb_read_button_code(void){
+                            247 ;	-----------------------------------------
+                            248 ;	 function kb_read_button_code
+                            249 ;	-----------------------------------------
+   0066                     250 _kb_read_button_code:
+                            251 ;	SRC/keyboard.c:47: char btnNumber=-1;
+   0066 7A FF               252 	mov	r2,#0xFF
+                            253 ;	SRC/keyboard.c:51: for(i=0;i<4;i++){
+   0068 7B 00               254 	mov	r3,#0x00
+   006A                     255 00106$:
+   006A C3                  256 	clr	c
+   006B EB                  257 	mov	a,r3
+   006C 64 80               258 	xrl	a,#0x80
+   006E 94 84               259 	subb	a,#0x84
+   0070 50 32               260 	jnc	00109$
+                            261 ;	SRC/keyboard.c:52: kb_select_col(i);
+   0072 8B 82               262 	mov	dpl,r3
+   0074 C0 02               263 	push	ar2
+   0076 C0 03               264 	push	ar3
+   0078 12s00r1B            265 	lcall	_kb_select_col
+                            266 ;	SRC/keyboard.c:53: rowNumber=kb_read_row_number();
+   007B 12s00r30            267 	lcall	_kb_read_row_number
+   007E AC 82               268 	mov	r4,dpl
+   0080 D0 03               269 	pop	ar3
+   0082 D0 02               270 	pop	ar2
+                            271 ;	SRC/keyboard.c:54: if(rowNumber==-2)
+   0084 BC FE 02            272 	cjne	r4,#0xFE,00120$
+   0087 80 18               273 	sjmp	00108$
+   0089                     274 00120$:
+                            275 ;	SRC/keyboard.c:56: if((rowNumber==-1)||(btnNumber!=-1)){			
+   0089 BC FF 02            276 	cjne	r4,#0xFF,00121$
+   008C 80 05               277 	sjmp	00103$
+   008E                     278 00121$:
+   008E BA FF 02            279 	cjne	r2,#0xFF,00122$
+   0091 80 04               280 	sjmp	00104$
+   0093                     281 00122$:
+   0093                     282 00103$:
+                            283 ;	SRC/keyboard.c:57: return -1;
+   0093 75 82 FF            284 	mov	dpl,#0xFF
+   0096 22                  285 	ret
+   0097                     286 00104$:
+                            287 ;	SRC/keyboard.c:59: btnNumber=(rowNumber<<2)|i;
+   0097 EC                  288 	mov	a,r4
+   0098 2C                  289 	add	a,r4
+   0099 25 E0               290 	add	a,acc
+   009B FC                  291 	mov	r4,a
+   009C EB                  292 	mov	a,r3
+   009D 42 04               293 	orl	ar4,a
+   009F 8C 02               294 	mov	ar2,r4
+                            295 ;	SRC/keyboard.c:60: tempi=i;
+   00A1                     296 00108$:
+                            297 ;	SRC/keyboard.c:51: for(i=0;i<4;i++){
+   00A1 0B                  298 	inc	r3
+   00A2 80 C6               299 	sjmp	00106$
+   00A4                     300 00109$:
+                            301 ;	SRC/keyboard.c:63: if(btnNumber==-1)
+   00A4 BA FF 04            302 	cjne	r2,#0xFF,00111$
+                            303 ;	SRC/keyboard.c:64: return -2;
+   00A7 75 82 FE            304 	mov	dpl,#0xFE
+   00AA 22                  305 	ret
+   00AB                     306 00111$:
+                            307 ;	SRC/keyboard.c:65: return symbolTable[btnNumber];
+   00AB EA                  308 	mov	a,r2
+   00AC 24r00               309 	add	a,#_symbolTable
+   00AE F8                  310 	mov	r0,a
+   00AF 86 82               311 	mov	dpl,@r0
+   00B1 22                  312 	ret
+                            313 	.area CSEG    (CODE)
+                            314 	.area CONST   (CODE)
+                            315 	.area XINIT   (CODE)
+                            316 	.area CABS    (ABS,CODE)

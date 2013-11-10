@@ -1,0 +1,1 @@
+void SetVector(unsigned char xdata *Address, void *Vector);
