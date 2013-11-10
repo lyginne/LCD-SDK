@@ -39,9 +39,9 @@ void beginTranslation(){
 }
 
 
-void initUart(queue * writeBuffer,queue * interruptWriteBuffer){
+void initUart(queue * writeBuffer){
 	_writeBuffer=writeBuffer;
-	_interruptWriteBuffer=interruptWriteBuffer;
+	//_interruptWriteBuffer=interruptWriteBuffer;
 	SCON = 0x40; //8-bit no recieve, work on timer
 	SetVector(0x2023, (void*) USART_ISR);
 	TMOD |= 0x20; /* TMOD */

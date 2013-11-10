@@ -36,7 +36,7 @@ e-mail: kluchev@d1.ifmo.ru
 #include "timer.h"
 volatile queue readBuffer;
 volatile queue writeBuffer;
-volatile queue interruptWriteBuffer;
+//volatile queue interruptWriteBuffer;
 
 static char tempForExpression[3];
 static char expressionByteNumber = 0;
@@ -50,8 +50,6 @@ static char savedKeyChar = 0;
 static char delays=0;
 
 static char number = 0;
-
-//char symbolTable[]={'1','2','3','a','4','5','6','b','7','8','9','c','*','0','#','d'};
 
 char checkExpression(){
 	return 1;
@@ -87,7 +85,7 @@ void verifyAndSave(void)
 	
 }
 
-void DelayExpired(void) __interrupt (1){
+/*void DelayExpired(void) __interrupt (1){
 	delays = 0;
 	
 	if( kb_read_button_code() == savedKeyChar){
@@ -116,9 +114,9 @@ void DelayExpired(void) __interrupt (1){
 		}
 		
 	}	
-}
+}*/
 
-void KeyPressedInterrupt(void) __interrupt (0){
+/*void KeyPressedInterrupt(void) __interrupt (0){
 	char buttonPressed;
 	number++;
 	//leds(0xf0);
@@ -138,7 +136,7 @@ void KeyPressedInterrupt(void) __interrupt (0){
 	}
 	TCON&=0xFD;
 	//leds(TCON);
-}
+}*/
 
 
 
@@ -153,16 +151,16 @@ void main (void) {
 	queueInit(&readBuffer);
 	write_max(ENA,0x60);
 	
-	initUart(&writeBuffer,&interruptWriteBuffer);
-	SetVector(0x2003, (void*)KeyPressedInterrupt);
-	EX0=1;
-	//EX1=1;
-	TCON|=0x01;
-	SetVector(0x200B, (void*)DelayExpired);
+	initUart(&writeBuffer);
+	//SetVector(0x2003, (void*)KeyPressedInterrupt);
+	//EX0=1;
+	//TCON|=0x01;
+	KB_Init();
+	//SetVector(0x200B, (void*)DelayExpired);
 	ET0 = 1;
 	EA = 1;
 	//leds(TCON);
-	SetDelayTimer(0xffff);
+	//SetDelayTimer(0xffff);
 	//leds(TMOD);
 	enqueue(&writeBuffer, 'g');
 	beginTranslation();	

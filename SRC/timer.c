@@ -1,7 +1,7 @@
 #include "aduc812.h"
 
 
-void SetDelayTimer(int value){
+void TimerInit(int value){
 	TMOD |= 0x01;
 	TCON |= 0x10;
 	TH0 = 0x00;
