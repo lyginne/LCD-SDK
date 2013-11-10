@@ -9,6 +9,7 @@ void queueInit(queue * curentQueue){
 
 volatile void enqueue(queue *curentQueue, char curentData)
 {
+	EA=0;
 	if (curentQueue->count >= QUEUESIZE){
 		//return 0x0;
 		//Error
@@ -22,14 +23,19 @@ volatile void enqueue(queue *curentQueue, char curentData)
 			curentQueue->last=0;
 		curentQueue->count++;
 	}
+	EA=1;
 }
 
 volatile char dequeue(queue *curentQueue)
-{
+{	
 	char curentData;
 
-	if (curentQueue->count <= 0)
+	EA=0;
+
+	if (curentQueue->count <= 0){
+		EA=1;
 		return 0;
+	}
 	else {
 		curentData = curentQueue->qdata[ curentQueue->first ];
 		curentQueue->first++;
@@ -37,6 +43,6 @@ volatile char dequeue(queue *curentQueue)
 			curentQueue->first=0;
 		curentQueue->count--;
 	}
-
+	EA=1;
 	return(curentData);
 }

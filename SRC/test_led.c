@@ -36,27 +36,8 @@ e-mail: kluchev@d1.ifmo.ru
 #include "timer.h"
 volatile queue readBuffer;
 volatile queue writeBuffer;
-//volatile queue interruptWriteBuffer;
 
-static char tempForExpression[3];
-static char expressionByteNumber = 0;
-
-static char transmitting=0;
-static char expressionReceiving=1;
-
-
-static char savedKeyChar = 0;
-
-static char delays=0;
-
-static char number = 0;
-
-char checkExpression(){
-	return 1;
-	
-}
-
-void verifyAndSave(void)
+/*void verifyAndSave(void)
 {	
 	if(tempForExpression[0]=='*'
 		||tempForExpression[0]=='#'
@@ -83,7 +64,7 @@ void verifyAndSave(void)
 	}
 	expressionByteNumber = 0;
 	
-}
+}*/
 
 /*void DelayExpired(void) __interrupt (1){
 	delays = 0;
@@ -155,9 +136,9 @@ void main (void) {
 	//SetVector(0x2003, (void*)KeyPressedInterrupt);
 	//EX0=1;
 	//TCON|=0x01;
-	KB_Init();
+	KB_Init(&readBuffer);
 	//SetVector(0x200B, (void*)DelayExpired);
-	ET0 = 1;
+	//ET0 = 1;
 	EA = 1;
 	//leds(TCON);
 	//SetDelayTimer(0xffff);

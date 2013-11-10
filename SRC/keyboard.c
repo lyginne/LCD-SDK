@@ -2,34 +2,13 @@
 #include "aduc812.h"
 #include "led.h"
 #include "interrupt.h"
+#include "timer.h"
 
 static char symbolTable[]={'1','2','3','A','4','5','6','B','7','8','9','C','*','0','#','D'};
-
+static char delays;
 static char number=0;
+static char savedKeyChar;
 //в 4-х младших битах вернет состояние строк
-void KeyPressedInterrupt(void) __interrupt (0){
-	char buttonPressed;
-	number++;
-	leds(number);
-	//expressionReceiving=1;
-	/*if(delays)
-		return;
-	
-	buttonPressed = kb_read_button_code();
-	if (buttonPressed == -1||buttonPressed==-2){
-		//error
-		return;
-	}
-	else{
-		delays = 1;
-		savedKeyChar = buttonPressed;
-		SetDelayTimer(0xffff);
-	}
-	TCON&=0xFD;
-	//leds(TCON);
-*/
-}
-
 
 unsigned char kb_read_row(void){
 	return (read_max(KB)>>4);
@@ -94,13 +73,34 @@ char kb_read_button_code(void){
 	return symbolTable[btnNumber];
 }
 
-void KB_Init(void){
+void KeyPressedInterrupt(void) __interrupt (0){
+	char buttonPressed;
+	number++;
+	//leds(number);
+	if(delays)
+		return;
+	
+	buttonPressed = kb_read_button_code();
+	kb_wtite_col(0x00);
+	TCON&=0xFD;
+	if (buttonPressed == -1||buttonPressed==-2){
+		//error
+		return;
+	}
+	else{
+		delays = 1;
+		savedKeyChar = buttonPressed;
+		SetDelayTimer(0x0000,savedKeyChar);
+	}
+
+}
+
+void KB_Init(void * readBuffer){
 	SetVector(0x2003, (void*)KeyPressedInterrupt);
 	TCON|=0x01;
+	TimerInit(&delays, readBuffer);
 	write_max(ENA,0x60);
 	kb_wtite_col(0x00);
 	EX0=1;
-	
-	//leds(0xf0);
 }
 	
