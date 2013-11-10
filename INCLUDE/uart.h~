@@ -1,7 +1,0 @@
-#include "queue.h"
-//I'm just sitting here tranminning
-void beginTranslation(void);
-
-void initUart(queue * writeBuffer,queue * interruptWriteBuffer);
-
-//char parsingExpresion;
