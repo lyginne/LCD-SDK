@@ -1,3 +1,6 @@
+#ifndef __QUEUE__H
+#define __QUEUE__H
+
 #define QUEUESIZE       32
 
 typedef struct {
@@ -12,3 +15,5 @@ void queueInit(queue * curentQueue);
 volatile void enqueue(queue *q, char data);
 
 volatile char dequeue(queue *q);
+
+#endif

@@ -4,6 +4,7 @@
 #include "led.h"
 #include "keyboard.h"
 #include "uart.h"
+#include "sound.h"
 
 static queue * _readBuffer;
 static char * _delays;
@@ -31,7 +32,6 @@ void verifyAndSave(void)
 		enqueue(_readBuffer,tempForExpression[0]);
 		enqueue(_readBuffer,tempForExpression[1]);
 		expressionByteNumber = 0;
-		//leds(0xff);
 		return;
 	}
 	if(tempForExpression[2]=='#'){
@@ -46,12 +46,13 @@ void verifyAndSave(void)
 }
 
 void DelayExpired(void) __interrupt (1){
-	//*_delays = 0;
+	*_delays = 0;
 	
 	if( kb_read_button_code() == _savedKeyChar){
 		//leds(0xff);
 		if(_savedKeyChar=='*'){
 			enqueue(&interruptWriteBuffer,'\n');
+			makeASound();
 			beginTranslation();
 			expressionByteNumber=0;
 			expressionReceiving = 1;
@@ -59,11 +60,14 @@ void DelayExpired(void) __interrupt (1){
 		}
 		enqueue(&interruptWriteBuffer,_savedKeyChar);
 		beginTranslation();
+		makeASound();
 		if(_savedKeyChar == '#' || expressionByteNumber==2){			
 			tempForExpression[expressionByteNumber]=_savedKeyChar;
 			expressionReceiving = 0;
-			if(_savedKeyChar != '#')
+			if(_savedKeyChar != '#'){
 				enqueue(&interruptWriteBuffer,'\n');
+				makeAnErrorSound();
+			}
 			beginTranslation();
 			verifyAndSave();
 		}
@@ -81,10 +85,6 @@ void TimerInit(char * delays, queue * readBuffer){
 	_delays = delays;
 	TMOD |= 0x01;
 	TCON |= 0x10;
-	//TH0 = 0x00;
-	//TL0 = 0x00;
-	//ET0 = 1;
-	
 }
 
 void SetDelayTimer(int value, char savedKeyChar){

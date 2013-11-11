@@ -3,14 +3,15 @@
 #include "queue.h"
 
 volatile queue * _writeBuffer;
-queue * _interruptWriteBuffer;
+volatile queue * _interruptWriteBuffer;
+volatile static char _lock;
 
 volatile static char _transmitting = 0;
 volatile static char _allowTranslation = 1;
 
 
 static void USART_ISR (void) __interrupt ( 4 ){
-	char trasmittingData;
+	 char trasmittingData;
 	_transmitting=0;
 	
 	if(TI){
@@ -39,8 +40,12 @@ static void USART_ISR (void) __interrupt ( 4 ){
 }
 
 void beginTranslation(){
+	if(_lock)
+		return;
+	_lock=1;
 	if(!_transmitting)			
 		TI=1;
+	_lock=0;
 }
 void blockUserTranslation(void){
 	_allowTranslation=0;
@@ -53,12 +58,11 @@ void beginUserTranslation(void){
 
 void initUart(queue * writeBuffer){
 	_writeBuffer=writeBuffer;
-	//_interruptWriteBuffer=interruptWriteBuffer;
 	SCON = 0x40; //8-bit no recieve, work on timer
 	SetVector(0x2023, (void*) USART_ISR);
-	TMOD |= 0x20; /* TMOD */
-	TCON |= 0x40; /* TCON */
-	TH1 = 0xFD; /* TH1 */
+	T2CON=0x34;
+	RCAP2H=0xff;
+	RCAP2L=0xdc;
 	ES=1;
 }
 

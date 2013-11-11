@@ -30,13 +30,16 @@ e-mail: kluchev@d1.ifmo.ru
 #include "led.h"
 #include "max.h"
 #include "queue.h"
-#include "interrupt.h"
+#include "sound.h"
 #include "keyboard.h"
 #include "uart.h"
 #include "timer.h"
 volatile queue readBuffer;
 volatile queue writeBuffer;
+
+
 	
+
 void main (void) {
 	unsigned char first, second, third;
 	unsigned char hundredsDec, dozensDec, unitsDec;
@@ -45,6 +48,7 @@ void main (void) {
 	
 	queueInit(&writeBuffer);
 	queueInit(&readBuffer);
+	InitSound();
 
 	initUart(&writeBuffer);
 	KB_Init(&readBuffer);
@@ -57,8 +61,6 @@ void main (void) {
 		
 		if (first==0)			
 			continue;
-		//else
-			//parsingExpresion=1;
 		second = dequeue(&readBuffer);
 		if(second != '#'){
 			third = dequeue(&readBuffer);
@@ -79,7 +81,6 @@ void main (void) {
 				firstValue=first-'0';
 			result = firstValue;
 		}
-		leds(result);
 		hundredsDec = result/100;
 		if (result>=100)
 			dozensDec = (result%100)/10;

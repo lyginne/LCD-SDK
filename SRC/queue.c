@@ -15,7 +15,6 @@ volatile void enqueue(queue *curentQueue, char curentData)
 		;;;;;;
 	}
 	else {
-		//q->last = (q->last+1) % QUEUESIZE;
 		curentQueue->qdata[ curentQueue->last ] = curentData;    
 		curentQueue->last++;
 		if( curentQueue->last>=QUEUESIZE)

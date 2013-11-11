@@ -3,6 +3,7 @@
 #include "led.h"
 #include "interrupt.h"
 #include "timer.h"
+#include "sound.h"
 
 static char xdata symbolTable[]={'1','2','3','A','4','5','6','B','7','8','9','C','*','0','#','D'};
 static char delays;
@@ -61,13 +62,19 @@ char kb_read_button_code(void){
 		rowNumber=kb_read_row_number();
 		if(rowNumber==-2)
 			continue;
-		if((rowNumber==-1)||(btnNumber!=-1)){			
+		if((rowNumber==-1)||(btnNumber!=-1)){
+			kb_wtite_col(0x00);
+			TCON&=0xFD;
+			leds(0xff);
+			makeAnErrorSound();			
 			return -1;
 		}
 		btnNumber=(rowNumber<<2)|i;
 		tempi=i;
 		
 	}
+	kb_wtite_col(0x00);
+	TCON&=0xFD;
 	if(btnNumber==-1)
 		return -2;
 	return symbolTable[btnNumber];
@@ -75,16 +82,17 @@ char kb_read_button_code(void){
 
 void KeyPressedInterrupt(void) __interrupt (0){
 	char buttonPressed;
-	number++;
-	//leds(number);
-	//if(delays)
-	//	return;
+	leds(0x00);
+	if(delays)
+		return;
 	
 	buttonPressed = kb_read_button_code();
 	kb_wtite_col(0x00);
 	TCON&=0xFD;
-	if (buttonPressed == -1||buttonPressed==-2){
-		//error
+	if(buttonPressed==-2){		
+		return;	
+	}
+	if (buttonPressed == -1){
 		return;
 	}
 	else{
