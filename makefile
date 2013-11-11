@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------------
 # Имя проекта
 
-NAME	= test_led
+NAME	= keyboard-sdk
 
 # Настройки компилятора и линкера
 
@@ -63,18 +63,19 @@ term:
 LIST_SRC = \
 $(SRC_DIR)/led.c \
 $(SRC_DIR)/max.c \
-$(SRC_DIR)/test_led.c \
+$(SRC_DIR)/keyboard-sdk.c \
 $(SRC_DIR)/queue.c \
 $(SRC_DIR)/interrupt.c \
 $(SRC_DIR)/keyboard.c \
 $(SRC_DIR)/uart.c \
-$(SRC_DIR)/timer.c
+$(SRC_DIR)/timer.c \
+$(SRC_DIR)/sound.c
 
 LIST_OBJ = $(LIST_SRC:.c=.rel)
 
 test_led : $(LIST_OBJ) makefile
-	$(CC) $(LIST_OBJ) -o test_led.hex $(LFLAGS)
-	$(M3P) hb166 test_led.hex test_led.bin bye
+	$(CC) $(LIST_OBJ) -o keyboard-sdk.hex $(LFLAGS)
+	$(M3P) hb166 keyboard-sdk.hex keyboard-sdk.bin bye
 
 
 $(LIST_OBJ) : %.rel : %.c makefile

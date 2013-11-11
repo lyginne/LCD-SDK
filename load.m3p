@@ -17,7 +17,7 @@
 
     T_RAM
 
-    0x2100       write test_led.bin
+    0x2100       write keyboard-sdk.bin
     0x2100       jmp
 
     0 term
