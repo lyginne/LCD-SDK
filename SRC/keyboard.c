@@ -4,7 +4,7 @@
 #include "interrupt.h"
 #include "timer.h"
 
-static char symbolTable[]={'1','2','3','A','4','5','6','B','7','8','9','C','*','0','#','D'};
+static char xdata symbolTable[]={'1','2','3','A','4','5','6','B','7','8','9','C','*','0','#','D'};
 static char delays;
 static char number=0;
 static char savedKeyChar;
@@ -77,8 +77,8 @@ void KeyPressedInterrupt(void) __interrupt (0){
 	char buttonPressed;
 	number++;
 	//leds(number);
-	if(delays)
-		return;
+	//if(delays)
+	//	return;
 	
 	buttonPressed = kb_read_button_code();
 	kb_wtite_col(0x00);

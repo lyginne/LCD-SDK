@@ -36,91 +36,6 @@ e-mail: kluchev@d1.ifmo.ru
 #include "timer.h"
 volatile queue readBuffer;
 volatile queue writeBuffer;
-
-/*void verifyAndSave(void)
-{	
-	if(tempForExpression[0]=='*'
-		||tempForExpression[0]=='#'
-		||tempForExpression[1]=='*'
-		||tempForExpression[2]=='*'){
-		expressionReceiving = 0;
-		expressionByteNumber = 0;	
-		return;
-		
-	}
-	if(tempForExpression[1]=='#'){
-		enqueue(&readBuffer,tempForExpression[0]);
-		enqueue(&readBuffer,tempForExpression[1]);
-		expressionByteNumber = 0;
-		//leds(0xff);
-		return;
-	}
-	if(tempForExpression[2]=='#'){
-		enqueue(&readBuffer,tempForExpression[0]);
-		enqueue(&readBuffer,tempForExpression[1]);
-		enqueue(&readBuffer,tempForExpression[2]);
-		expressionByteNumber = 0;
-		return;
-	}
-	expressionByteNumber = 0;
-	
-}*/
-
-/*void DelayExpired(void) __interrupt (1){
-	delays = 0;
-	
-	if( kb_read_button_code() == savedKeyChar){
-		if(savedKeyChar=='*'){
-			enqueue(&interruptWriteBuffer,'\n');
-			beginTranslation();
-			expressionByteNumber=0;
-			expressionReceiving = 1;
-			return;
-		}
-		if(expressionReceiving){
-			enqueue(&interruptWriteBuffer,savedKeyChar);
-			beginTranslation();
-			ET0 = 0;
-		}
-		if(savedKeyChar == '#' || expressionByteNumber==2){			
-			tempForExpression[expressionByteNumber]=savedKeyChar;
-			expressionReceiving = 0;
-			enqueue(&interruptWriteBuffer,'\n');
-			beginTranslation();
-			verifyAndSave();
-		}
-		else{
-			tempForExpression[expressionByteNumber]=savedKeyChar;
-			expressionByteNumber++;
-		}
-		
-	}	
-}*/
-
-/*void KeyPressedInterrupt(void) __interrupt (0){
-	char buttonPressed;
-	number++;
-	//leds(0xf0);
-	expressionReceiving=1;
-	if(delays)
-		return;
-	
-	buttonPressed = kb_read_button_code();
-	if (buttonPressed == -1||buttonPressed==-2){
-		//error
-		return;
-	}
-	else{
-		delays = 1;
-		savedKeyChar = buttonPressed;
-		SetDelayTimer(0xffff);
-	}
-	TCON&=0xFD;
-	//leds(TCON);
-}*/
-
-
-
 	
 void main (void) {
 	unsigned char first, second, third;
@@ -130,21 +45,11 @@ void main (void) {
 	
 	queueInit(&writeBuffer);
 	queueInit(&readBuffer);
-	write_max(ENA,0x60);
-	
+
 	initUart(&writeBuffer);
-	//SetVector(0x2003, (void*)KeyPressedInterrupt);
-	//EX0=1;
-	//TCON|=0x01;
 	KB_Init(&readBuffer);
-	//SetVector(0x200B, (void*)DelayExpired);
-	//ET0 = 1;
+
 	EA = 1;
-	//leds(TCON);
-	//SetDelayTimer(0xffff);
-	//leds(TMOD);
-	enqueue(&writeBuffer, 'g');
-	beginTranslation();	
 	
 	
 	for(;;){
@@ -174,19 +79,21 @@ void main (void) {
 				firstValue=first-'0';
 			result = firstValue;
 		}
-		//leds(result);
+		leds(result);
 		hundredsDec = result/100;
 		if (result>=100)
 			dozensDec = (result%100)/10;
 		else
 			dozensDec = result/10;
 		unitsDec = result%10;
+		blockUserTranslation();
 		if(hundredsDec!=0)
 			enqueue(&writeBuffer, hundredsDec+'0');
 		if(dozensDec!=0||hundredsDec!=0)
 			enqueue(&writeBuffer, dozensDec + '0');			
 		enqueue(&writeBuffer, unitsDec +'0');
-		beginTranslation();
+		enqueue(&writeBuffer, '\n');
+		beginUserTranslation();
 	}
 }
 

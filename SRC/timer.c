@@ -3,12 +3,15 @@
 #include "interrupt.h"
 #include "led.h"
 #include "keyboard.h"
+#include "uart.h"
 
 static queue * _readBuffer;
 static char * _delays;
 static char _savedKeyChar;
 static char tempForExpression[3];
 static char expressionByteNumber = 0;
+
+static xdata queue interruptWriteBuffer;
 
 static char transmitting=0;
 static char expressionReceiving=1;
@@ -43,26 +46,25 @@ void verifyAndSave(void)
 }
 
 void DelayExpired(void) __interrupt (1){
-	*_delays = 0;
-	leds(0xf0);
+	//*_delays = 0;
+	
 	if( kb_read_button_code() == _savedKeyChar){
+		//leds(0xff);
 		if(_savedKeyChar=='*'){
-			//enqueue(&interruptWriteBuffer,'\n');
-			//beginTranslation();
+			enqueue(&interruptWriteBuffer,'\n');
+			beginTranslation();
 			expressionByteNumber=0;
 			expressionReceiving = 1;
 			return;
 		}
-		if(expressionReceiving){
-			//enqueue(&interruptWriteBuffer,_savedKeyChar);
-			//beginTranslation();
-			ET0 = 0;
-		}
+		enqueue(&interruptWriteBuffer,_savedKeyChar);
+		beginTranslation();
 		if(_savedKeyChar == '#' || expressionByteNumber==2){			
 			tempForExpression[expressionByteNumber]=_savedKeyChar;
 			expressionReceiving = 0;
-			//enqueue(&interruptWriteBuffer,'\n');
-			//beginTranslation();
+			if(_savedKeyChar != '#')
+				enqueue(&interruptWriteBuffer,'\n');
+			beginTranslation();
 			verifyAndSave();
 		}
 		else{
@@ -70,7 +72,8 @@ void DelayExpired(void) __interrupt (1){
 			expressionByteNumber++;
 		}
 		
-	}	
+	}
+		
 }
 
 void TimerInit(char * delays, queue * readBuffer){
@@ -87,6 +90,7 @@ void TimerInit(char * delays, queue * readBuffer){
 void SetDelayTimer(int value, char savedKeyChar){
 	_savedKeyChar=savedKeyChar;
 	SetVector(0x200B, (void*)DelayExpired);
+	SetInterruptBuffer(&interruptWriteBuffer);
 	TH0 = (value>>4);
 	TL0 = value;
 	ET0 = 1;

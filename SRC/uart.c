@@ -2,10 +2,12 @@
 #include "interrupt.h"
 #include "queue.h"
 
-queue * _writeBuffer;
+volatile queue * _writeBuffer;
 queue * _interruptWriteBuffer;
 
 volatile static char _transmitting = 0;
+volatile static char _allowTranslation = 1;
+
 
 static void USART_ISR (void) __interrupt ( 4 ){
 	char trasmittingData;
@@ -14,13 +16,14 @@ static void USART_ISR (void) __interrupt ( 4 ){
 	if(TI){
 		
 		_transmitting=1;
-		trasmittingData = dequeue(_writeBuffer);
-
-		if(trasmittingData!=0){
-			SBUF=trasmittingData;
-			_transmitting=1;
-			TI=0;
-			return;
+		if(_allowTranslation){
+			trasmittingData = dequeue(_writeBuffer);
+			if(trasmittingData!=0){
+				SBUF=trasmittingData;
+				_transmitting=1;
+				TI=0;
+				return;
+			}
 		}
 
 		trasmittingData = dequeue(_interruptWriteBuffer);
@@ -30,12 +33,21 @@ static void USART_ISR (void) __interrupt ( 4 ){
 			TI=0;
 			return;
 		}
+		
+		
 	}
 }
 
 void beginTranslation(){
 	if(!_transmitting)			
 		TI=1;
+}
+void blockUserTranslation(void){
+	_allowTranslation=0;
+}
+void beginUserTranslation(void){
+	_allowTranslation=1;
+	beginTranslation();
 }
 
 
@@ -48,5 +60,9 @@ void initUart(queue * writeBuffer){
 	TCON |= 0x40; /* TCON */
 	TH1 = 0xFD; /* TH1 */
 	ES=1;
+}
+
+void SetInterruptBuffer(queue xdata * interruptWriteBuffer){
+	_interruptWriteBuffer=interruptWriteBuffer;
 }
 
