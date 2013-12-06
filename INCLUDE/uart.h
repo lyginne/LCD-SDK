@@ -11,7 +11,9 @@ void initUart(queue * writeBuffer);
 void SetInterruptBuffer(queue xdata * interruptWriteBuffer);
 
 void blockUserTranslation(void);
-void beginUserTranslation(void);
+void allowUserTranslation(void);
+void blockKernelTranslation(void);
+void allowKernelTranslation(void);
 //char parsingExpresion;
 
 #endif

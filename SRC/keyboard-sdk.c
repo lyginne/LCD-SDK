@@ -102,7 +102,9 @@ void main (void) {
 				enqueue(&writeBuffer, 'o');
 				enqueue(&writeBuffer, 'r');
 				enqueue(&writeBuffer, '\n');
-				beginUserTranslation();
+				allowUserTranslation();
+				allowKernelTranslation();
+				beginTranslation();
 				continue;
 			} 
 			result = firstValue / secondValue;
@@ -125,6 +127,8 @@ void main (void) {
 			enqueue(&writeBuffer, dozensDec + '0');			
 		enqueue(&writeBuffer, unitsDec +'0');
 		enqueue(&writeBuffer, '\n');
-		beginUserTranslation();
+		allowUserTranslation();
+		allowKernelTranslation();
+		beginTranslation();
 	}
 }

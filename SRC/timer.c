@@ -60,6 +60,7 @@ void verifyAndSave(void)
 					for (i=0; i<=3;i++)
 						enqueue(_readBuffer,tempForExpression[i]);
 					expressionByteNumber = 0;
+					enqueue(&interruptWriteBuffer, 'B');
 					return;	
 				}
 				enqueue(&interruptWriteBuffer, 'e');
@@ -78,6 +79,7 @@ void verifyAndSave(void)
 				for (i=0; i<=4;i++)
 					enqueue(_readBuffer,tempForExpression[i]);
 				expressionByteNumber = 0;
+				enqueue(&interruptWriteBuffer, 'B');
 				return;
 			}
 		}
@@ -115,6 +117,7 @@ void verifyAndSave(void)
 				for (i=0; i<=4;i++)
 					enqueue(_readBuffer,tempForExpression[i]);
 				expressionByteNumber = 0;
+				enqueue(&interruptWriteBuffer, 'B');
 				return;	
 			}
 			enqueue(&interruptWriteBuffer, 'e');
@@ -133,6 +136,7 @@ void verifyAndSave(void)
 			for (i=0; i<=5;i++)
 				enqueue(_readBuffer,tempForExpression[i]);
 			expressionByteNumber = 0;
+			enqueue(&interruptWriteBuffer, 'B');
 			return;
 		}
 	}
