@@ -5,6 +5,8 @@
 #include "keyboard.h"
 #include "uart.h"
 #include "sound.h"
+#include "lcd.h"
+
 
 static queue * _readBuffer;
 static char * _delays;
@@ -17,19 +19,29 @@ static xdata queue interruptWriteBuffer;
 static char transmitting=0;
 static char expressionReceiving=1;
 
+
+void error(void){
+	lcd_clear();
+	enqueue(&interruptWriteBuffer, 'e');
+	lcd_putchar('e');
+	enqueue(&interruptWriteBuffer, 'r');
+	lcd_putchar('r');
+	enqueue(&interruptWriteBuffer, 'r');
+	lcd_putchar('r');
+	enqueue(&interruptWriteBuffer, 'o');
+	lcd_putchar('o');
+	enqueue(&interruptWriteBuffer, 'r');
+	lcd_putchar('r');
+	enqueue(&interruptWriteBuffer, '\n');
+	makeAnErrorSound();
+	lcd_block();
+}
 void verifyAndSave(void)
 {
 	char i;
 	//?*	
 	if(tempForExpression[0]<'0'||tempForExpression[0]>'9'){
-		//error
-		enqueue(&interruptWriteBuffer, 'e');
-		enqueue(&interruptWriteBuffer, 'r');
-		enqueue(&interruptWriteBuffer, 'r');
-		enqueue(&interruptWriteBuffer, 'o');
-		enqueue(&interruptWriteBuffer, 'r');
-		enqueue(&interruptWriteBuffer, '\n');
-		makeAnErrorSound();
+		error();
 		expressionByteNumber = 0;	
 		return;
 		
@@ -43,13 +55,7 @@ void verifyAndSave(void)
 		||tempForExpression[1]=='/'){
 			//if not ?+?*
 			if (tempForExpression[2]<'0'||tempForExpression[2]>'9'){
-				enqueue(&interruptWriteBuffer, 'e');
-				enqueue(&interruptWriteBuffer, 'r');
-				enqueue(&interruptWriteBuffer, 'r');
-				enqueue(&interruptWriteBuffer, 'o');
-				enqueue(&interruptWriteBuffer, 'r');
-				enqueue(&interruptWriteBuffer, '\n');
-				makeAnErrorSound();
+				error();
 				expressionByteNumber = 0;	
 				return;	
 			}
@@ -57,39 +63,29 @@ void verifyAndSave(void)
 			if(tempForExpression[3]<'0'||tempForExpression[3]>'9'){
 				//if ?+?=
 				if(tempForExpression[3]=='='){
-					for (i=0; i<=3;i++)
+					for (i=0; i<=3;i++){
 						enqueue(_readBuffer,tempForExpression[i]);
+					}
 					expressionByteNumber = 0;
-					enqueue(&interruptWriteBuffer, 'B');
+					enqueue(&interruptWriteBuffer, 'B');					
 					return;	
 				}
-				enqueue(&interruptWriteBuffer, 'e');
-				enqueue(&interruptWriteBuffer, 'r');
-				enqueue(&interruptWriteBuffer, 'r');
-				enqueue(&interruptWriteBuffer, 'o');
-				enqueue(&interruptWriteBuffer, 'r');
-				enqueue(&interruptWriteBuffer, '\n');
-				makeAnErrorSound();
+				error();
 				expressionByteNumber = 0;
 				return;	
 				
 			}
 			//if ?+??=
 			if(tempForExpression[4]=='='){
-				for (i=0; i<=4;i++)
+				for (i=0; i<=4;i++){
 					enqueue(_readBuffer,tempForExpression[i]);
+				}
 				expressionByteNumber = 0;
 				enqueue(&interruptWriteBuffer, 'B');
 				return;
 			}
 		}
-		enqueue(&interruptWriteBuffer, 'e');
-		enqueue(&interruptWriteBuffer, 'r');
-		enqueue(&interruptWriteBuffer, 'r');
-		enqueue(&interruptWriteBuffer, 'o');
-		enqueue(&interruptWriteBuffer, 'r');
-		enqueue(&interruptWriteBuffer, '\n');
-		makeAnErrorSound();
+		error();
 		expressionByteNumber = 0;
 		return;
 	}
@@ -100,13 +96,7 @@ void verifyAndSave(void)
 		||tempForExpression[2]=='/'){
 		//if not ??+?*
 		if (tempForExpression[3]<'0'||tempForExpression[3]>'9'){
-			enqueue(&interruptWriteBuffer, 'e');
-			enqueue(&interruptWriteBuffer, 'r');
-			enqueue(&interruptWriteBuffer, 'r');
-			enqueue(&interruptWriteBuffer, 'o');
-			enqueue(&interruptWriteBuffer, 'r');
-			enqueue(&interruptWriteBuffer, '\n');
-			makeAnErrorSound();
+			error();
 			expressionByteNumber = 0;	
 			return;	
 		}
@@ -114,39 +104,29 @@ void verifyAndSave(void)
 		if(tempForExpression[4]<'0'||tempForExpression[4]>'9'){
 			//if ??+?=
 			if(tempForExpression[4]=='='){
-				for (i=0; i<=4;i++)
+				for (i=0; i<=4;i++){
 					enqueue(_readBuffer,tempForExpression[i]);
+				}
 				expressionByteNumber = 0;
 				enqueue(&interruptWriteBuffer, 'B');
 				return;	
 			}
-			enqueue(&interruptWriteBuffer, 'e');
-			enqueue(&interruptWriteBuffer, 'r');
-			enqueue(&interruptWriteBuffer, 'r');
-			enqueue(&interruptWriteBuffer, 'o');
-			enqueue(&interruptWriteBuffer, 'r');
-			enqueue(&interruptWriteBuffer, '\n');
-			makeAnErrorSound();
+			error();
 			expressionByteNumber = 0;
 			return;	
 			
 		}
 		//if ??+??=
 		if(tempForExpression[5]=='='){
-			for (i=0; i<=5;i++)
+			for (i=0; i<=5;i++){
 				enqueue(_readBuffer,tempForExpression[i]);
+			}
 			expressionByteNumber = 0;
 			enqueue(&interruptWriteBuffer, 'B');
 			return;
 		}
 	}
-	enqueue(&interruptWriteBuffer, 'e');
-	enqueue(&interruptWriteBuffer, 'r');
-	enqueue(&interruptWriteBuffer, 'r');
-	enqueue(&interruptWriteBuffer, 'o');
-	enqueue(&interruptWriteBuffer, 'r');
-	enqueue(&interruptWriteBuffer, '\n');
-	makeAnErrorSound();
+	error();
 	expressionByteNumber = 0;
 	return;
 }
@@ -159,7 +139,7 @@ void DelayExpired(void) __interrupt (1){
 		if(_savedKeyChar=='#'){
 			//clear outputs
 			enqueue(&interruptWriteBuffer,'\n');
-			//write to lcd here
+			lcd_clear();
 			makeASound();
 			beginTranslation();
 			expressionByteNumber=0;
@@ -167,7 +147,12 @@ void DelayExpired(void) __interrupt (1){
 			return;
 		}
 		//Write that what was inputted
+		if(expressionByteNumber==0){
+			lcd_clear();
+			lcd_allow();
+		}
 		enqueue(&interruptWriteBuffer,_savedKeyChar);
+		lcd_putchar(_savedKeyChar);
 		//write to lcd here
 		beginTranslation();
 		makeASound();

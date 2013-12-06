@@ -33,7 +33,10 @@ e-mail: kluchev@d1.ifmo.ru
 #include "sound.h"
 #include "keyboard.h"
 #include "uart.h"
+#include "lcd.h"
 #include "timer.h"
+
+
 volatile queue readBuffer;
 volatile queue writeBuffer;
 
@@ -45,7 +48,7 @@ void main (void) {
 	unsigned char thouthandsDec, hundredsDec, dozensDec, unitsDec;
 	int result;
 	unsigned char firstValue, secondValue;
-	
+	lcd_clear();
 	queueInit(&writeBuffer);
 	queueInit(&readBuffer);
 	InitSound();
@@ -91,16 +94,23 @@ void main (void) {
 			if (result<0){
 				result=~result+1;
 				enqueue(&writeBuffer, '-');
+				lcd_putchar('-');
 			}
 		else if(operation == '*')
 			result = firstValue * secondValue;
 		else if(operation == '/'){
 			if(secondValue==0){
+				lcd_clear();
 				enqueue(&writeBuffer, 'e');
+				lcd_putchar('e');
 				enqueue(&writeBuffer, 'r');
+				lcd_putchar('r');
 				enqueue(&writeBuffer, 'r');
+				lcd_putchar('r');
 				enqueue(&writeBuffer, 'o');
+				lcd_putchar('o');
 				enqueue(&writeBuffer, 'r');
+				lcd_putchar('r');
 				enqueue(&writeBuffer, '\n');
 				allowUserTranslation();
 				allowKernelTranslation();
@@ -119,13 +129,20 @@ void main (void) {
 		else
 			dozensDec = result/10;
 		unitsDec = result%10;		
-		if(thouthandsDec!=0)	
+		if(thouthandsDec!=0){	
 			enqueue(&writeBuffer, thouthandsDec+'0');
-		if(hundredsDec!=0||thouthandsDec!=0)
+			lcd_putchar(thouthandsDec+'0');
+		}
+		if(hundredsDec!=0||thouthandsDec!=0){
 			enqueue(&writeBuffer, hundredsDec+'0');
-		if(dozensDec!=0||hundredsDec!=0||thouthandsDec!=0)
-			enqueue(&writeBuffer, dozensDec + '0');			
+			lcd_putchar(hundredsDec+'0');
+		}
+		if(dozensDec!=0||hundredsDec!=0||thouthandsDec!=0){
+			enqueue(&writeBuffer, dozensDec + '0');	
+			lcd_putchar(dozensDec + '0');	
+		}	
 		enqueue(&writeBuffer, unitsDec +'0');
+		lcd_putchar(unitsDec +'0');
 		enqueue(&writeBuffer, '\n');
 		allowUserTranslation();
 		allowKernelTranslation();
