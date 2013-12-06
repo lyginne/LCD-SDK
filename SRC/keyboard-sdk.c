@@ -41,9 +41,9 @@ volatile queue writeBuffer;
 	
 
 void main (void) {
-	unsigned char first, second, third;
-	unsigned char hundredsDec, dozensDec, unitsDec;
-	unsigned char result;
+	unsigned char first, second, operation;
+	unsigned char thouthandsDec, hundredsDec, dozensDec, unitsDec;
+	int result;
 	unsigned char firstValue, secondValue;
 	
 	queueInit(&writeBuffer);
@@ -57,44 +57,74 @@ void main (void) {
 	
 	
 	for(;;){
+		result = 0;
 		first = dequeue(&readBuffer);
 		
 		if (first==0)			
 			continue;
 		second = dequeue(&readBuffer);
-		if(second != '#'){
-			third = dequeue(&readBuffer);
-			if(first>='A')
-				firstValue=first-'A'+0xA;
-			else
-				firstValue=first-'0';
-			if(second>='A')
-				secondValue=second-'A'+0xA;
-			else
-				secondValue=second-'0';
-			result = (firstValue<<4)+(secondValue);
+		if(second == '+'
+		||second == '-'
+		||second == '/'
+		||second == '*'){
+			operation = second;
+			firstValue = first-'0';
 		}
 		else{
-			if(first>='A')
-				firstValue=first-'A'+0xA;
-			else
-				firstValue=first-'0';
-			result = firstValue;
+			operation = dequeue(&readBuffer);
+			firstValue = (second-'0')*10+first-'0';
 		}
-		hundredsDec = result/100;
+		first = dequeue(&readBuffer);		
+		second = dequeue(&readBuffer);
+		if(second == '='){
+			secondValue = first-'0';
+		}
+		else{
+			secondValue = (second-'0')*10+first-'0';
+			dequeue(&readBuffer);
+		}
+		blockUserTranslation();
+		if(operation == '+')
+			result = firstValue + secondValue;
+		else if(operation == '-')
+			result = firstValue - secondValue;
+			if (result<0){
+				result=~result+1;
+				enqueue(&writeBuffer, '-');
+			}
+		else if(operation == '*')
+			result = firstValue * secondValue;
+		else if(operation == '/'){
+			if(secondValue==0){
+				enqueue(&writeBuffer, 'e');
+				enqueue(&writeBuffer, 'r');
+				enqueue(&writeBuffer, 'r');
+				enqueue(&writeBuffer, 'o');
+				enqueue(&writeBuffer, 'r');
+				enqueue(&writeBuffer, '\n');
+				beginUserTranslation();
+				continue;
+			} 
+			result = firstValue / secondValue;
+		}
+		thouthandsDec = result/1000;
+		if(result>1000)			
+			hundredsDec = (result%1000)/100;
+		else
+			hundredsDec = result/100;
 		if (result>=100)
 			dozensDec = (result%100)/10;
 		else
 			dozensDec = result/10;
-		unitsDec = result%10;
-		blockUserTranslation();
-		if(hundredsDec!=0)
+		unitsDec = result%10;		
+		if(thouthandsDec!=0)	
+			enqueue(&writeBuffer, thouthandsDec+'0');
+		if(hundredsDec!=0||thouthandsDec!=0)
 			enqueue(&writeBuffer, hundredsDec+'0');
-		if(dozensDec!=0||hundredsDec!=0)
+		if(dozensDec!=0||hundredsDec!=0||thouthandsDec!=0)
 			enqueue(&writeBuffer, dozensDec + '0');			
 		enqueue(&writeBuffer, unitsDec +'0');
 		enqueue(&writeBuffer, '\n');
 		beginUserTranslation();
 	}
 }
-

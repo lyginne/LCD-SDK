@@ -5,7 +5,7 @@
 #include "timer.h"
 #include "sound.h"
 
-static char xdata symbolTable[]={'1','2','3','A','4','5','6','B','7','8','9','C','*','0','#','D'};
+static char xdata symbolTable[]={'1','2','3','+','4','5','6','-','7','8','9','*','=','0','#','/'};
 static char delays;
 static char number=0;
 static char savedKeyChar;

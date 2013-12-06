@@ -4,7 +4,7 @@
 #include "max.h"
 
 static unsigned char _half_periods=0;
-static char state=2;
+static char state=0;
 static char ENA_Value;
 
 void soundTimer(void) __interrupt{
@@ -20,7 +20,7 @@ void soundTimer(void) __interrupt{
 				break;
 			default:
 				state=0;
-				ET1=0;
+				_half_periods=0;
 				break;
 		}	
 	}
@@ -30,8 +30,10 @@ void soundTimer(void) __interrupt{
 		TL1=0x1E;
 		return;
 	}
-	ENA_Value=(read_max(ENA)|ENA_Value^0x1C|0x60);
-	write_max(ENA,ENA_Value);
+	if(state!=0){
+		ENA_Value=(read_max(ENA)|ENA_Value^0x1C|0x60);
+		write_max(ENA,ENA_Value);
+	}
 	TH1=0xF9;
 	TL1=0x1E;
 }
@@ -40,7 +42,6 @@ void makeASound(){
 	state=1;
 	TH1=0xF9;
 	TL1=0x1E;
-	ET1=1;
 }
 
 void makeAnErrorSound(void){
@@ -49,11 +50,11 @@ void makeAnErrorSound(void){
 	state=2;
 	TH1=0xF9;
 	TL1=0x1E;
-	ET1=1;
 }
 
 void InitSound(void){
 	SetVector(0X201B,(void*)soundTimer);
 	TMOD |= 0x10;
-	TCON |= 0x40; 	
+	TCON |= 0x40; 
+	ET1=1;	
 }
