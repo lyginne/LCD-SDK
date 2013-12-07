@@ -76,7 +76,7 @@ void main (void) {
 		}
 		else{
 			operation = dequeue(&readBuffer);
-			firstValue = (second-'0')*10+first-'0';
+			firstValue = (first-'0')*10+second-'0';
 		}
 		first = dequeue(&readBuffer);		
 		second = dequeue(&readBuffer);
@@ -84,7 +84,7 @@ void main (void) {
 			secondValue = first-'0';
 		}
 		else{
-			secondValue = (second-'0')*10+first-'0';
+			secondValue = (first-'0')*10+second-'0';
 			dequeue(&readBuffer);
 		}
 		blockUserTranslation();
@@ -119,7 +119,7 @@ void main (void) {
 				lcd_allow();
 				continue;
 			} 
-			result = (((firstValue%10)*10)+(firstValue/10)) / secondValue;
+			result = firstValue / secondValue;
 		}
 		thouthandsDec = result/1000;
 		if(result>1000)			
