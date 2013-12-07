@@ -95,24 +95,14 @@ void main (void) {
 			if (result<0){
 				result=~result+1;
 				enqueue(&writeBuffer, '-');
-				lcd_putchar('-');
+				lcd_putCharNow('-');
 			}
 		else if(operation == '*')
 			result = firstValue * secondValue;
 		else if(operation == '/'){
 			if(secondValue==0){
-				lcd_clear();
-				enqueue(&writeBuffer, 'e');
-				lcd_putchar('e');
-				enqueue(&writeBuffer, 'r');
-				lcd_putchar('r');
-				enqueue(&writeBuffer, 'r');
-				lcd_putchar('r');
-				enqueue(&writeBuffer, 'o');
-				lcd_putchar('o');
-				enqueue(&writeBuffer, 'r');
-				lcd_putchar('r');
-				enqueue(&writeBuffer, '\n');
+				enqueues(&writeBuffer, "error\n");
+				lcd_putStringNow("error\n");
 				allowUserTranslation();
 				allowKernelTranslation();
 				beginTranslation();
@@ -133,18 +123,19 @@ void main (void) {
 		unitsDec = result%10;		
 		if(thouthandsDec!=0){	
 			enqueue(&writeBuffer, thouthandsDec+'0');
-			lcd_putchar(thouthandsDec+'0');
+			lcd_putCharNow(thouthandsDec+'0');
 		}
 		if(hundredsDec!=0||thouthandsDec!=0){
 			enqueue(&writeBuffer, hundredsDec+'0');
-			lcd_putchar(hundredsDec+'0');
+			lcd_putCharNow(hundredsDec+'0');
 		}
 		if(dozensDec!=0||hundredsDec!=0||thouthandsDec!=0){
 			enqueue(&writeBuffer, dozensDec + '0');	
-			lcd_putchar(dozensDec + '0');	
+			lcd_putCharNow(dozensDec + '0');	
 		}	
 		enqueue(&writeBuffer, unitsDec +'0');
-		lcd_putchar(unitsDec +'0');
+		lcd_putCharNow(unitsDec +'0');
+		lcd_putCharNow('\n');
 		enqueue(&writeBuffer, '\n');
 		lcd_allow();
 		allowUserTranslation();

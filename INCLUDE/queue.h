@@ -12,9 +12,11 @@ typedef struct {
 
 void queueInit( queue * curentQueue);
 
-volatile void enqueue( queue *q, char data);
+volatile void enqueue(queue *curentQueue, char curentData);
 
-volatile char dequeue( queue *q);
+volatile char dequeue( queue *curentQueue);
+
+volatile void enqueues(queue *curentQueue, char * curentData);
 
 void queue_clear(queue *q);
 

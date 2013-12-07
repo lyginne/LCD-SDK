@@ -31,14 +31,12 @@ static void USART_ISR (void) __interrupt ( 4 ){
 
 
 		_transmitting=1;
-		if(_allowUserTranslation){
-			trasmittingData = dequeue(_writeBuffer);
-			if(trasmittingData!=0){
-				SBUF=trasmittingData;
-				_transmitting=1;
-				TI=0;
-				return;
-			}
+		trasmittingData = dequeue(_writeBuffer);
+		if(trasmittingData!=0){
+			SBUF=trasmittingData;
+			_transmitting=1;
+			TI=0;
+			return;
 		}
 		if(_allowKernelTranslation){
 			trasmittingData = dequeue(_interruptWriteBuffer);

@@ -21,18 +21,8 @@ static char expressionReceiving=1;
 
 
 void error(void){
-	lcd_putQueueChar('C');
-	enqueue(&interruptWriteBuffer, 'e');
-	lcd_putQueueChar('e');
-	enqueue(&interruptWriteBuffer, 'r');
-	lcd_putQueueChar('r');
-	enqueue(&interruptWriteBuffer, 'r');
-	lcd_putQueueChar('r');
-	enqueue(&interruptWriteBuffer, 'o');
-	lcd_putQueueChar('o');
-	enqueue(&interruptWriteBuffer, 'r');
-	lcd_putQueueChar('r');
-	enqueue(&interruptWriteBuffer, '\n');
+	enqueues(&interruptWriteBuffer,"error\n");
+	lcd_putStringQueue("error\n");
 	makeAnErrorSound();
 	//lcd_block();
 }
@@ -68,7 +58,7 @@ void verifyAndSave(void)
 					}
 					expressionByteNumber = 0;
 					enqueue(&interruptWriteBuffer, 'B');
-					lcd_putQueueChar('B');					
+					lcd_putCharQueue('B');					
 					return;	
 				}
 				error();
@@ -83,7 +73,7 @@ void verifyAndSave(void)
 				}
 				expressionByteNumber = 0;
 				enqueue(&interruptWriteBuffer, 'B');
-				lcd_putQueueChar('B');
+				lcd_putCharQueue('B');
 				return;
 			}
 		}
@@ -111,7 +101,7 @@ void verifyAndSave(void)
 				}
 				expressionByteNumber = 0;
 				enqueue(&interruptWriteBuffer, 'B');
-				lcd_putQueueChar('B');
+				lcd_putCharQueue('B');
 				return;	
 			}
 			error();
@@ -126,7 +116,7 @@ void verifyAndSave(void)
 			}
 			expressionByteNumber = 0;
 			enqueue(&interruptWriteBuffer, 'B');
-			lcd_putQueueChar('B');
+			lcd_putCharQueue('B');
 			return;
 		}
 	}
@@ -150,7 +140,7 @@ void DelayExpired(void) __interrupt (1){
 			allowKernelTranslation();
 			uart_clerQueue();
 			enqueue(&interruptWriteBuffer,'\n');
-			lcd_putQueueChar('C');
+			lcd_clear();
 			makeASound();
 			beginTranslation();
 			expressionByteNumber=0;
@@ -158,12 +148,8 @@ void DelayExpired(void) __interrupt (1){
 			return;
 		}
 		//Write that what was inputted
-		if(expressionByteNumber==0){
-			lcd_putQueueChar('C');
-			//lcd_allow();
-		}
 		enqueue(&interruptWriteBuffer,_savedKeyChar);
-		lcd_putQueueChar(_savedKeyChar);
+		lcd_putCharQueue(_savedKeyChar);
 		//write to lcd here
 		beginTranslation();
 		makeASound();
