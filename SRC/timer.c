@@ -8,33 +8,33 @@
 #include "lcd.h"
 
 
-static queue * _readBuffer;
-static char * _delays;
+volatile static queue * _readBuffer;
+volatile static char * _delays;
 static char _savedKeyChar;
 static char tempForExpression[6];
 static char expressionByteNumber = 0;
 
-static xdata queue interruptWriteBuffer;
+volatile static xdata queue interruptWriteBuffer;
 
 static char transmitting=0;
 static char expressionReceiving=1;
 
 
 void error(void){
-	lcd_clear();
+	lcd_putQueueChar('C');
 	enqueue(&interruptWriteBuffer, 'e');
-	lcd_putchar('e');
+	lcd_putQueueChar('e');
 	enqueue(&interruptWriteBuffer, 'r');
-	lcd_putchar('r');
+	lcd_putQueueChar('r');
 	enqueue(&interruptWriteBuffer, 'r');
-	lcd_putchar('r');
+	lcd_putQueueChar('r');
 	enqueue(&interruptWriteBuffer, 'o');
-	lcd_putchar('o');
+	lcd_putQueueChar('o');
 	enqueue(&interruptWriteBuffer, 'r');
-	lcd_putchar('r');
+	lcd_putQueueChar('r');
 	enqueue(&interruptWriteBuffer, '\n');
 	makeAnErrorSound();
-	lcd_block();
+	//lcd_block();
 }
 void verifyAndSave(void)
 {
@@ -67,7 +67,8 @@ void verifyAndSave(void)
 						enqueue(_readBuffer,tempForExpression[i]);
 					}
 					expressionByteNumber = 0;
-					enqueue(&interruptWriteBuffer, 'B');					
+					enqueue(&interruptWriteBuffer, 'B');
+					lcd_putQueueChar('B');					
 					return;	
 				}
 				error();
@@ -82,6 +83,7 @@ void verifyAndSave(void)
 				}
 				expressionByteNumber = 0;
 				enqueue(&interruptWriteBuffer, 'B');
+				lcd_putQueueChar('B');
 				return;
 			}
 		}
@@ -109,6 +111,7 @@ void verifyAndSave(void)
 				}
 				expressionByteNumber = 0;
 				enqueue(&interruptWriteBuffer, 'B');
+				lcd_putQueueChar('B');
 				return;	
 			}
 			error();
@@ -123,6 +126,7 @@ void verifyAndSave(void)
 			}
 			expressionByteNumber = 0;
 			enqueue(&interruptWriteBuffer, 'B');
+			lcd_putQueueChar('B');
 			return;
 		}
 	}
@@ -137,9 +141,16 @@ void DelayExpired(void) __interrupt (1){
 	if( kb_read_button_code() == _savedKeyChar){
 		//leds(0xff);
 		if(_savedKeyChar=='#'){
-			//clear outputs
+			//clear outputs			
+			queue_clear(&interruptWriteBuffer);
+			queue_clear(_readBuffer);
+			leds_clearQueue();
+			lcd_allow();
+			allowUserTranslation();
+			allowKernelTranslation();
+			uart_clerQueue();
 			enqueue(&interruptWriteBuffer,'\n');
-			lcd_clear();
+			lcd_putQueueChar('C');
 			makeASound();
 			beginTranslation();
 			expressionByteNumber=0;
@@ -148,17 +159,16 @@ void DelayExpired(void) __interrupt (1){
 		}
 		//Write that what was inputted
 		if(expressionByteNumber==0){
-			lcd_clear();
-			lcd_allow();
+			lcd_putQueueChar('C');
+			//lcd_allow();
 		}
 		enqueue(&interruptWriteBuffer,_savedKeyChar);
-		lcd_putchar(_savedKeyChar);
+		lcd_putQueueChar(_savedKeyChar);
 		//write to lcd here
 		beginTranslation();
 		makeASound();
 		tempForExpression[expressionByteNumber]=_savedKeyChar;
 		expressionByteNumber++;
-		leds(expressionByteNumber);
 		//if this is the end
 		if(_savedKeyChar == '=' || expressionByteNumber==6){
 			expressionReceiving = 0;
@@ -172,7 +182,7 @@ void DelayExpired(void) __interrupt (1){
 	}
 }
 
-void TimerInit(char * delays, queue * readBuffer){
+void TimerInit(char * delays,queue * readBuffer){
 	_readBuffer=readBuffer;
 	_delays = delays;
 	TMOD |= 0x01;

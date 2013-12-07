@@ -14,6 +14,7 @@ void blockUserTranslation(void);
 void allowUserTranslation(void);
 void blockKernelTranslation(void);
 void allowKernelTranslation(void);
+void uart_clerQueue(void);
 //char parsingExpresion;
 
 #endif

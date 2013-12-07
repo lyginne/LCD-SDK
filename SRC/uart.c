@@ -3,7 +3,7 @@
 #include "queue.h"
 
 volatile queue * _writeBuffer;
-volatile queue * _interruptWriteBuffer;
+volatile xdata queue * _interruptWriteBuffer;
 volatile static char _lock;
 
 volatile static char _transmitting = 0;
@@ -75,7 +75,11 @@ void initUart(queue * writeBuffer){
 	ES=1;
 }
 
-void SetInterruptBuffer(queue xdata * interruptWriteBuffer){
+void SetInterruptBuffer(xdata queue * interruptWriteBuffer){
 	_interruptWriteBuffer=interruptWriteBuffer;
+}
+
+void uart_clerQueue(void){
+	queue_clear(_writeBuffer);
 }
 

@@ -62,9 +62,10 @@ void main (void) {
 	for(;;){
 		result = 0;
 		first = dequeue(&readBuffer);
-		
+		lcd_doYourJob();
 		if (first==0)			
 			continue;
+		lcd_doYourJob();
 		second = dequeue(&readBuffer);
 		if(second == '+'
 		||second == '-'
@@ -115,9 +116,10 @@ void main (void) {
 				allowUserTranslation();
 				allowKernelTranslation();
 				beginTranslation();
+				lcd_allow();
 				continue;
 			} 
-			result = firstValue / secondValue;
+			result = (((firstValue%10)*10)+(firstValue/10)) / secondValue;
 		}
 		thouthandsDec = result/1000;
 		if(result>1000)			
@@ -144,6 +146,7 @@ void main (void) {
 		enqueue(&writeBuffer, unitsDec +'0');
 		lcd_putchar(unitsDec +'0');
 		enqueue(&writeBuffer, '\n');
+		lcd_allow();
 		allowUserTranslation();
 		allowKernelTranslation();
 		beginTranslation();

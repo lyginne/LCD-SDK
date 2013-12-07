@@ -1,7 +1,8 @@
 #include "max.h"
-#include "lcd.h"
 #include "led.h"
 #include "queue.h"
+
+volatile static xdata queue interruptLCDWriteBuffer;
 
 volatile char _allowLCD = 1;
 
@@ -68,17 +69,42 @@ void lcd_clear(void) {
 }
 
 void lcd_putchar(const char c) {
-	unsigned char ddram_addr = lcd_get_ddram_addr();
-	if (_allowLCD==1){	
-		if ((ddram_addr > 0x0f) && (ddram_addr < 0x40)) {
-			lcd_set_ddram_addr(0x40);
-		}
-		while(lcd_bfstate()) {}
-		write_max(DATA_IND, c);
-		write_max(C_IND, 0x05);
-		write_max(C_IND, 0x04);
-		return;
+	unsigned char ddram_addr = lcd_get_ddram_addr();	
+	//if first string owerflows - write on second
+	if ((ddram_addr > 0x0f) && (ddram_addr < 0x40)) {
+		lcd_set_ddram_addr(0x40);
 	}
+	while(lcd_bfstate()) {}
+	write_max(DATA_IND, c);
+	write_max(C_IND, 0x05);
+	write_max(C_IND, 0x04);
+	return;
+}
+
+void lcd_doYourJob(void){
+	unsigned char outputData;
+	if(!_allowLCD)
+		return;
+	while (outputData = dequeue(&interruptLCDWriteBuffer)){
+		if(outputData=='B'){
+			lcd_block();
+			return;
+		}
+		if(outputData=='C'){
+			lcd_clear();
+			continue;
+		}
+		lcd_putchar(outputData);
+	}
+}
+
+void lcd_putQueueChar(char ptsData){
+	enqueue(&interruptLCDWriteBuffer, ptsData);
+
+}
+
+void leds_clearQueue(void){
+	queue_clear(&interruptLCDWriteBuffer);
 }
 
 

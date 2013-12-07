@@ -39,3 +39,9 @@ volatile char dequeue(queue *curentQueue)
 	}
 	return(curentData);
 }
+
+volatile void queue_clear(queue *curentQueue){
+	curentQueue->first=0;
+	curentQueue->last=0;
+	curentQueue->count=0;
+}

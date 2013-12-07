@@ -10,10 +10,12 @@ typedef struct {
         volatile char count;                      /* number of queue elements */
 } queue;
 
-void queueInit(queue * curentQueue);
+void queueInit( queue * curentQueue);
 
-volatile void enqueue(queue *q, char data);
+volatile void enqueue( queue *q, char data);
 
-volatile char dequeue(queue *q);
+volatile char dequeue( queue *q);
+
+void queue_clear(queue *q);
 
 #endif
